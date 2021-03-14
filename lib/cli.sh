@@ -125,5 +125,6 @@ p6_github_gh_pr_merge() {
 p6_github_gh_pr_create() {
   local user="${1:-${USER:-pgollucci}}"
 
+  p6_git_p6_push
   p6_github_gh_cmd pr create -a "$user" -f
 }
