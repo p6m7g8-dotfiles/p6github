@@ -12,7 +12,7 @@ p6_github_gh_action_view() {
     local action_id="$1"
 
     if p6_string_blank "$action_id"; then
-      action_id=$(p6_github_gh_actions_last)
+        action_id=$(p6_github_gh_actions_last)
     fi
 
     if p6_string_blank "$action_id"; then

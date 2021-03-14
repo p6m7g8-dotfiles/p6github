@@ -26,7 +26,7 @@ p6_github_util_thing_parse() {
             GH_VER=${thing##*%}
         else
             # shellcheck disable=SC2034  # Unused variables left for readability
-            GH_VER=master # XXX: ugg, master->main completely breaks peg revisions 
+            GH_VER=master # XXX: ugg, master->main completely breaks peg revisions
         fi
     fi
 

@@ -51,6 +51,6 @@ p6_git_branch_name_gen() {
 
     local name
     name="$prefix$token"
- 
+
     p6_return_str "$name"
 }
