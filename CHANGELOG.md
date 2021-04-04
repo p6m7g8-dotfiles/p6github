@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.1.2](https://github.com/p6m7g8/p6github/compare/v2.1.1...v2.1.2) (2021-04-04)
+
+
+### Features
+
+* **api:** `+p6_github_gh_pr_create`, `+p6_github_gh_pr_submit` ([#38](https://github.com/p6m7g8/p6github/issues/38)) ([548c1d0](https://github.com/p6m7g8/p6github/commit/548c1d016fc7e03d6e714f68cd56547e4c136b9f))
+* **api:** +`p6_github_gh_action_status`, +`p6_github_gh_action_status_json` ([#35](https://github.com/p6m7g8/p6github/issues/35)) ([aedaf63](https://github.com/p6m7g8/p6github/commit/aedaf63b95335d257a263aae3ca763a75c989e57))
+* **api:** +`p6_github_gh_action_view_do` ([#37](https://github.com/p6m7g8/p6github/issues/37)) ([8d31af8](https://github.com/p6m7g8/p6github/commit/8d31af899dd1f69a1c0100118ad744a3cedfc5a6))
+
+
+### Bug Fixes
+
+* **cli:** push branch before making pr to gaurantee no prompt ([#42](https://github.com/p6m7g8/p6github/issues/42)) ([1624184](https://github.com/p6m7g8/p6github/commit/162418483c8df37c1ce22f36d1ce53546d7a0f9e))
+
+
+* adds cdk8-team to tracked orgs ([#44](https://github.com/p6m7g8/p6github/issues/44)) ([9a2f05e](https://github.com/p6m7g8/p6github/commit/9a2f05e83d69523bcb6ca875d8dc1f62c5876b2c))
+* track github repo renames ([#43](https://github.com/p6m7g8/p6github/issues/43)) ([acaa394](https://github.com/p6m7g8/p6github/commit/acaa394bd2b8093453226eaad2c4cbaa9952d1a4))
+* **api:** p6_git_branch_name_gen ([#39](https://github.com/p6m7g8/p6github/issues/39)) ([9f02944](https://github.com/p6m7g8/p6github/commit/9f02944d2e89f9296f4ef67ca53ac6f71aded274))
+* **api:** split into files, renames, returns, +action(s) ([#36](https://github.com/p6m7g8/p6github/issues/36)) ([41059a3](https://github.com/p6m7g8/p6github/commit/41059a303a01318bc447b43fcfa6d448a017be2e))
+* **README:** updates generator ([#40](https://github.com/p6m7g8/p6github/issues/40)) ([99f7531](https://github.com/p6m7g8/p6github/commit/99f75315b820baa61ab1b61a43f80d6170e19410))
+* Coc -> .github ([b8010ab](https://github.com/p6m7g8/p6github/commit/b8010ab997740347050ca86503370bb98d50a317))
+* the great vscode indent of 2021 ([#41](https://github.com/p6m7g8/p6github/issues/41)) ([99a84bb](https://github.com/p6m7g8/p6github/commit/99a84bb4bfe7a7b697073770c94db0508f8c59e0))
+
 ### [2.1.1](https://github.com/p6m7g8/p6github/compare/v2.1.0...v2.1.1) (2020-12-06)
 
 
