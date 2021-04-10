@@ -6,11 +6,12 @@
 #
 #  Args:
 #	cmd -
-#	... -
+#	... - 
 #
 #  Returns:
 #	code - rc
 #
+#  Depends:	 p6_run
 #>
 ######################################################################
 p6_github_gh_cmd() {
@@ -47,7 +48,7 @@ p6_github_gh_pr_list() {
 #
 #  Args:
 #	pr -
-#	... -
+#	... - 
 #
 #>
 ######################################################################
@@ -65,7 +66,7 @@ p6_github_gh_pr_checkout() {
 #
 #  Args:
 #	pr -
-#	... -
+#	... - 
 #
 #>
 ######################################################################
@@ -73,25 +74,25 @@ p6_github_gh_pr_view() {
   local pr="$1"
   shift 1
 
-  p6_github_gh_cmd pr view -w "$pr" "$@"
+  p6_github_gh_cmd pr view "$pr" "$@"
 }
 
 ######################################################################
 #<
 #
-# Function: p6_github_gh_pr_comment(pr, ...)
+# Function: p6_github_gh_pr_comment(pr, body)
 #
 #  Args:
 #	pr -
-#	... -
+#	body -
 #
 #>
 ######################################################################
 p6_github_gh_pr_comment() {
   local pr="$1"
-  shift 1
+  local body="$2"
 
-  p6_github_gh_cmd pr review "$pr" --comment -b "$@"
+  p6_github_gh_cmd pr comment "$pr" --body "$body"
 }
 
 ######################################################################
@@ -101,7 +102,7 @@ p6_github_gh_pr_comment() {
 #
 #  Args:
 #	pr -
-#	... -
+#	... - 
 #
 #>
 ######################################################################
@@ -115,11 +116,30 @@ p6_github_gh_pr_merge() {
 ######################################################################
 #<
 #
+# Function: p6_github_gh_pr_close(pr, ...)
+#
+#  Args:
+#	pr -
+#	... - 
+#
+#>
+######################################################################
+p6_github_gh_pr_close() {
+  local pr="$1"
+  shift 1
+
+  p6_github_gh_cmd pr close -d "$pr"
+}
+
+######################################################################
+#<
+#
 # Function: p6_github_gh_pr_create([user=${USER:-pgollucci])
 #
 #  Args:
 #	OPTIONAL user - [${USER:-pgollucci]
 #
+#  Environment:	 USER
 #>
 ######################################################################
 p6_github_gh_pr_create() {

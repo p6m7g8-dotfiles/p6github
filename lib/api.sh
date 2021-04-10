@@ -1,13 +1,13 @@
 ######################################################################
 #<
 #
-# Function: str list = p6_github_api_org_repos_list([org=:org])
+# Function: words list = p6_github_api_org_repos_list([org=:org])
 #
 #  Args:
 #	OPTIONAL org - [:org]
 #
 #  Returns:
-#	str - list
+#	words - list
 #
 #>
 ######################################################################
@@ -15,21 +15,21 @@ p6_github_api_org_repos_list() {
     local org="${1:-:org}"
 
     local list
-    list=$(gh api "orgs/$org/repos" --paginate | jq -M -r "[.[] | .clone_url ]" | grep http | sed -e 's,.*/,,' -e 's,",,g' -e 's/,//' -e 's,\.git$,,' | sort)
+    list=$(p6_github_gh_cmd repo list "$org" -L 1000 --source | awk '{print $1}' | sort)
 
-    p6_return_str "$list"
+    p6_return_words "$list"
 }
 
 ######################################################################
 #<
 #
-# Function: str list = p6_github_api_user_repos_list([user=:user])
+# Function: words list = p6_github_api_user_repos_list([user=:user])
 #
 #  Args:
 #	OPTIONAL user - [:user]
 #
 #  Returns:
-#	str - list
+#	words - list
 #
 #>
 ######################################################################
@@ -37,9 +37,31 @@ p6_github_api_user_repos_list() {
     local user="${1:-:user}"
 
     local list
-    list=$(gh api "users/$user/repos" --paginate | jq -M -r "[.[] | .clone_url ]" | grep http | sed -e 's,.*/,,' -e 's,\.git\",,' -e 's,",,g' -e 's/,//' | sort)
+    list=$(p6_github_api_user_repos_list "$user")
 
-    p6_return_str "$list"
+    p6_return_words "$list"
+}
+
+######################################################################
+#<
+#
+# Function: words list = p6_github_api_repos_list(org_or_user)
+#
+#  Args:
+#	org_or_user -
+#
+#  Returns:
+#	words - list
+#
+#>
+######################################################################
+p6_github_api_repos_list() {
+    local org_or_user="$1"
+
+    local list
+    list=$(p6_github_api_org_repos_list "$org_or_user")
+
+    p6_return_words "$list"
 }
 
 ######################################################################
