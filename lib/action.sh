@@ -6,6 +6,7 @@
 #  Args:
 #	action_id -
 #
+#  Depends:	 p6_string
 #>
 ######################################################################
 p6_github_gh_action_view() {
@@ -30,6 +31,7 @@ p6_github_gh_action_view() {
 #  Args:
 #	action_id -
 #
+#  Depends:	 p6_color p6_dir p6_file p6_msg p6_run p6_transient
 #>
 ######################################################################
 p6_github_gh_action_view_do() {
@@ -122,6 +124,7 @@ p6_github_gh_action_status() {
 #  Returns:
 #	bool - rc: to continue or not
 #
+#  Depends:	 p6_run p6_string
 #>
 ######################################################################
 p6_github_gh_action_status_stop_when_completed() {

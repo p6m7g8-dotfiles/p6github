@@ -148,3 +148,33 @@ p6_github_gh_pr_create() {
   p6_git_p6_push
   p6_github_gh_cmd pr create -a "$user" -f
 }
+
+######################################################################
+#<
+#
+# Function: p6_github_gh_repo_clone(repo, ...)
+#
+#  Args:
+#	repo -
+#	... - 
+#
+#>
+######################################################################
+p6_github_gh_repo_clone() {
+  local repo="$1"
+  shift 1
+
+  p6_github_gh_cmd repo clone "$repo" "$@"
+}
+
+######################################################################
+#<
+#
+# Function: p6_github_gh_repo_pull()
+#
+#>
+######################################################################
+p6_github_gh_repo_pull() {
+
+  p6_github_gh_cmd repo sync "$@"
+}

@@ -9,6 +9,7 @@
 #	pass -
 #	note -
 #
+#  Environment:	 GH_TOKEN GH_TOKEN_ID POST
 #>
 ######################################################################
 p6_github_oauth_token_get() {
@@ -37,6 +38,7 @@ p6_github_oauth_token_get() {
 #	pass -
 #	id -
 #
+#  Environment:	 DELETE
 #>
 ######################################################################
 p6_github_oauth_token_del() {
@@ -53,6 +55,7 @@ p6_github_oauth_token_del() {
 #
 # Function: p6_github_oauth_token_clear()
 #
+#  Environment:	 GH_TOKEN GH_TOKEN_ID
 #>
 ######################################################################
 p6_github_oauth_token_clear() {

@@ -6,6 +6,8 @@
 #  Args:
 #	msg -
 #
+#  Depends:	 p6_string
+#  Environment:	 USER
 #>
 ######################################################################
 p6_github_gh_pr_submit() {

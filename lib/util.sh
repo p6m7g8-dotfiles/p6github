@@ -6,6 +6,7 @@
 #  Args:
 #	thing -
 #
+#  Environment:	 GH_REPO GH_VER GITHUB_URL SC2034
 #>
 ######################################################################
 p6_github_util_thing_parse() {
@@ -38,6 +39,7 @@ p6_github_util_thing_parse() {
 #
 # Function: p6_github_util_thing_clear()
 #
+#  Environment:	 GH_REPO GH_VER
 #>
 ######################################################################
 p6_github_util_thing_clear() {
@@ -59,6 +61,7 @@ p6_github_util_thing_clear() {
 #	dir -
 #	OPTIONAL parallel - [8]
 #
+#  Depends:	 p6_run
 #>
 ######################################################################
 p6_github_util_org_repos_clone() {
@@ -83,6 +86,7 @@ p6_github_util_org_repos_clone() {
 #	dir -
 #	OPTIONAL parallel - [8]
 #
+#  Depends:	 p6_run
 #>
 ######################################################################
 p6_github_util_user_repos_clone() {
@@ -108,6 +112,7 @@ p6_github_util_user_repos_clone() {
 #	dir -
 #	repo -
 #
+#  Depends:	 p6_dir p6_h1
 #>
 ######################################################################
 p6_github_util_repo_clone_or_pull() {
@@ -115,18 +120,56 @@ p6_github_util_repo_clone_or_pull() {
     local dir="$2"
     local repo="$3"
 
+    repo=$(p6_echo "$repo" | cut -f 2 -d /)
+
+    if p6_dir_exists "$dir/$ou/$repo"; then
+        p6_h1 "$repo [pull]" >&2
+        (
+            p6_dir_cd "$dir/$ou/$repo"
+            p6_github_gh_repo_pull
+        )
+    else
+        p6_h1 "$repo [clone]" >&2
+        p6_dir_mk "$dir/$ou/$repo"
+        (
+            p6_dir_cd "$dir/$ou"
+            p6_github_gh_repo_clone "${ou}"/"${repo}" "-- -q --depth 1 >/dev/null"
+        )
+    fi
+}
+
+######################################################################
+#<
+#
+# Function: p6_github_util_repo_clone_or_pull_no_ou(dir, repo)
+#
+#  Args:
+#	dir -
+#	repo -
+#
+#  Depends:	 p6_dir p6_h1
+#>
+######################################################################
+p6_github_util_repo_clone_or_pull_no_ou() {
+    local dir="$1"
+    local repo="$2"
+
+    local ou
+    ou=$(p6_echo "$repo" | cut -f 1 -d /)
+    repo=$(p6_echo "$repo" | cut -f 2 -d /)
+
     if p6_dir_exists "$dir/$ou/$repo"; then
         p6_h1 "$repo [pull]"
         (
             p6_dir_cd "$dir/$ou/$repo"
-            p6_git_cmd pull -q
+            p6_github_gh_repo_pull
         )
     else
         p6_h1 "$repo [clone]"
         p6_dir_mk "$dir/$ou/$repo"
         (
             p6_dir_cd "$dir/$ou"
-            gh repo clone "${ou}"/"${repo}" -- -q --depth 1 >/dev/null
+            p6_github_gh_repo_clone "${ou}"/"${repo}" "-- -q --depth 1 >/dev/null"
         )
     fi
 }
