@@ -70,7 +70,8 @@ p6_github_util_org_repos_clone() {
     local parallel="${3:-8}"
 
     local repos
-    repos=$(p6_github_api_org_repos_list "$org")
+    # XXX:  the org is passed in and passed so strip it, otherwise use the _no_ou variant and omit $org
+    repos=$(p6_github_api_org_repos_list "$org" | sed -e 's,.*/,,')
     p6_run_parallel "0" "$parallel" "$repos" "p6_github_util_repo_clone_or_pull" "$org" "$dir"
 
     p6_return_void
