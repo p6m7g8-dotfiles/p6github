@@ -17,7 +17,6 @@ p6df::modules::p6github::deps() {
 # Function: p6df::modules::p6github::init()
 #
 #  Depends:	 p6_bootstrap
-#  Environment:	 P6_DFZ_SRC_DIR
 #>
 ######################################################################
 p6df::modules::p6github::init() {
