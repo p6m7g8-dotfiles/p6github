@@ -48,80 +48,31 @@
 - p6df::modules::p6github::init()
 
 
-### ../../p6m7g8/p6github/lib:
+### p6github/lib:
 
-#### ../../p6m7g8/p6github/lib/action.sh:
-
-- bool rc = p6_github_gh_action_status_stop_when_completed(_status)
-- p6_github_gh_action_view(action_id)
-- p6_github_gh_action_view_do(action_id)
-- str _status = p6_github_gh_action_status(action_id)
-- str json = p6_github_gh_action_status_json(action_id)
-
-#### ../../p6m7g8/p6github/lib/actions.sh:
-
-- str action_id = p6_github_gh_actions_last()
-
-#### ../../p6m7g8/p6github/lib/api.sh:
-
-- str list = p6_github_api_actions_list([name=Build], [owner=:owner], [repo=:repo])
-- str log = p6_github_api_action_log(action_id, [owner=:owner], [repo=:repo])
-- words list = p6_github_api_org_repos_list([org=:org])
-- words list = p6_github_api_repos_list(org_or_user)
-- words list = p6_github_api_user_repos_list([user=:user])
-
-#### ../../p6m7g8/p6github/lib/branch.sh:
+#### p6github/lib/branch.sh:
 
 - p6_github_branch_submit(branch, msg)
 
-#### ../../p6m7g8/p6github/lib/cli.sh:
-
-- code rc = p6_github_gh_cmd(cmd, ...)
-- p6_github_gh_pr_checkout(pr, ...)
-- p6_github_gh_pr_close(pr, ...)
-- p6_github_gh_pr_comment(pr, body)
-- p6_github_gh_pr_create([user=${USER:-pgollucci])
-- p6_github_gh_pr_list()
-- p6_github_gh_pr_merge(pr, ...)
-- p6_github_gh_pr_view(pr, ...)
-- p6_github_gh_repo_clone(repo, ...)
-- p6_github_gh_repo_pull()
-
-#### ../../p6m7g8/p6github/lib/oauth.sh:
-
-- p6_github_oauth_token_clear()
-- p6_github_oauth_token_del(gh_api, user, pass, id)
-- p6_github_oauth_token_get(gh_api, user, pass, note)
-
-#### ../../p6m7g8/p6github/lib/pr.sh:
+#### p6github/lib/pr.sh:
 
 - p6_github_gh_pr_submit(msg)
 - str name = p6_git_branch_name_gen([prefix=branch])
 
-#### ../../p6m7g8/p6github/lib/util.sh:
+#### p6github/lib/wrapper.sh:
 
-- p6_github_util_org_repos_clone(org, dir, [parallel=8])
-- p6_github_util_repo_clone_or_pull(ou, dir, repo)
-- p6_github_util_repo_clone_or_pull_no_ou(dir, repo)
-- p6_github_util_thing_clear()
-- p6_github_util_thing_parse(thing)
-- p6_github_util_user_repos_clone(user, dir, [parallel=8])
+- p6_github_login_clone(login, dir)
 
 
 
 ## Hier
 ```text
 .
-├── action.sh
-├── actions.sh
-├── api.sh
 ├── branch.sh
-├── cli.sh
-├── oauth.sh
 ├── pr.sh
-└── util.sh
+└── wrapper.sh
 
-0 directories, 8 files
+0 directories, 3 files
 ```
 ## Author
 
