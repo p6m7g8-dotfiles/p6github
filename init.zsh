@@ -3,6 +3,7 @@
 #
 # Function: p6df::modules::p6github::deps()
 #
+#  Depends:	 p6_bootstrap
 #>
 ######################################################################
 p6df::modules::p6github::deps() {

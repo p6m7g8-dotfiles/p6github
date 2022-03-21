@@ -52,14 +52,18 @@
 
 #### p6github/lib/branch.sh:
 
-- p6_github_branch_submit(branch, msg)
+- str branch = p6_github_branch_transliterate(msg)
 
-#### p6github/lib/pr.sh:
+#### p6github/lib/gh.sh:
 
-- p6_github_gh_pr_submit(msg)
-- str name = p6_git_branch_name_gen([prefix=branch])
+- int pr_id = p6_github_gh_pr_last()
+- p6_gh()
+- p6_github_gh_pr_list()
+- p6_github_gh_pr_merge_last()
+- p6_github_gh_submit(msg)
+- p6_github_gh_tidy()
 
-#### p6github/lib/wrapper.sh:
+#### p6github/lib/login.sh:
 
 - p6_github_login_clone(login, dir)
 
@@ -69,8 +73,8 @@
 ```text
 .
 ├── branch.sh
-├── pr.sh
-└── wrapper.sh
+├── gh.sh
+└── login.sh
 
 0 directories, 3 files
 ```
