@@ -68,7 +68,6 @@
 - p6_github_login_clone(login, dir)
 
 
-
 ## Hier
 ```text
 .
