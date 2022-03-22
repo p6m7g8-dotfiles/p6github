@@ -121,11 +121,8 @@ p6_github_gh_submit() {
     # Step 6: Push
     p6_git_p6_push
 
-    # Step 7a: Create PR
+    # Step 7: Create PR
     p6_gh pr create -a "$USER" -f -r p6m7g8-automation
-
-    # Step 7b: Make sure we are checked out to the PR
-    p6_gh pr checkout "$(p6_github_gh_pr_last)" # XXX race
 
     # Step 8: Back to default
     p6_git_p6_checkout_default
