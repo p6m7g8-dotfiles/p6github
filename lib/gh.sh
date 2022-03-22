@@ -127,9 +127,6 @@ p6_github_gh_submit() {
     # Step 7b: Make sure we are checked out to the PR
     p6_gh pr checkout "$(p6_github_gh_pr_last)" # XXX race
 
-    # Step 7b: Make sure we are checked out to the PR
-    (sudo su - p6m7g8-archive gh pr review --approve)
-
     # Step 8: Back to default
     p6_git_p6_checkout_default
 
