@@ -23,7 +23,7 @@ p6_github_branch_transliterate() {
     kind=$(p6_echo "$msg" | cut -d : -f 1)
 
     local rest
-    rest=$(p6_echo "$msg" | cut -d : -f 2 | sed -e 's,^ *,,' -e 's, ,_,g')
+    rest=$(p6_echo "$msg" | cut -d : -f 2- | sed -e 's,^ *,,' -e 's, ,_,g')
     rest=$(p6_string_replace "$rest" "[^A-Za-z0-9_#]" "")
 
     local branch
