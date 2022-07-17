@@ -5,7 +5,6 @@
 #
 # Function: p6_gh()
 #
-#  Depends:	 p6_run
 #>
 ######################################################################
 p6_gh() {
@@ -18,7 +17,6 @@ p6_gh() {
 #
 # Function: p6_github_gh_pr_list()
 #
-#  Depends:	 p6_gh
 #>
 ######################################################################
 p6_github_gh_pr_list() {
@@ -33,7 +31,6 @@ p6_github_gh_pr_list() {
 #
 # Function: p6_github_gh_tidy()
 #
-#  Depends:	 p6_run
 #>
 ######################################################################
 p6_github_gh_tidy() {
@@ -68,7 +65,6 @@ p6_github_gh_pr_last() {
 #
 # Function: p6_github_gh_pr_merge_last()
 #
-#  Depends:	 p6_gh
 #>
 ######################################################################
 p6_github_gh_pr_merge_last() {
@@ -94,7 +90,6 @@ p6_github_gh_pr_merge_last() {
 #  Args:
 #	msg -
 #
-#  Depends:	 p6_gh
 #  Environment:	 USER
 #>
 ######################################################################

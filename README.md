@@ -45,7 +45,7 @@
 #### p6github/init.zsh:
 
 - p6df::modules::p6github::deps()
-- p6df::modules::p6github::init()
+- p6df::modules::p6github::init(_module, dir)
 
 
 ### p6github/lib:
@@ -66,6 +66,7 @@
 #### p6github/lib/login.sh:
 
 - p6_github_login_clone(login, dir)
+
 
 
 ## Hier

@@ -3,7 +3,6 @@
 #
 # Function: p6df::modules::p6github::deps()
 #
-#  Depends:	 p6_bootstrap
 #>
 ######################################################################
 p6df::modules::p6github::deps() {
@@ -15,9 +14,12 @@ p6df::modules::p6github::deps() {
 ######################################################################
 #<
 #
-# Function: p6df::modules::p6github::init()
+# Function: p6df::modules::p6github::init(_module, dir)
 #
-#  Depends:	 p6_bootstrap
+#  Args:
+#	_module -
+#	dir -
+#
 #>
 ######################################################################
 p6df::modules::p6github::init() {
