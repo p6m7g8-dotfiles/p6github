@@ -20,7 +20,7 @@ p6_github_branch_transliterate() {
     local prefix="p6df-"
 
     local kind
-    kind=$(p6_echo "$msg" | cut -d : -f 1)
+    kind=$(p6_echo "$msg" | cut -d : -f 1 | sed -e 's,(,/,g' -e 's,),/,g' -e 's,/$,,')
 
     local rest
     rest=$(p6_echo "$msg" | cut -d : -f 2- | sed -e 's,^ *,,' -e 's, ,_,g')
