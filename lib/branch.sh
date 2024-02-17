@@ -20,14 +20,15 @@ p6_github_branch_transliterate() {
     local prefix="p6df-"
 
     local kind
-    kind=$(p6_echo "$msg" | cut -d : -f 1 | sed -e 's,(,/,g' -e 's,),/,g' -e 's,/$,,')
+    kind=$(p6_echo "$msg" | cut -d : -f 1 | sed -e 's,(,/,g' -e 's,),/,g' -e 's,/$,,' -e 's,\/\!,!,')
 
     local rest
     rest=$(p6_echo "$msg" | cut -d : -f 2- | sed -e 's,^ *,,' -e 's, ,_,g')
     rest=$(p6_string_replace "$rest" "[^A-Za-z0-9_#]" "")
 
     local branch
-    branch="$kind/$rest#$prefix$suffix"
+    local user=$USER
+    branch="$user/$kind/$rest#$prefix$suffix"
 
     p6_return_str "$branch"
 }
