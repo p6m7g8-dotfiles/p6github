@@ -1,18 +1,21 @@
 ######################################################################
 #<
 #
-# Function: str branch = p6_github_branch_transliterate(msg)
+# Function: str branch = p6_github_branch_transliterate(pr_num, msg)
 #
 #  Args:
+#	pr_num -
 #	msg -
 #
 #  Returns:
 #	str - branch
 #
+#  Environment:	 P6_DFZ_GH_BRANCH_STYLE USER
 #>
 ######################################################################
 p6_github_branch_transliterate() {
-    local msg="$1"
+    local pr_num="$1"
+    local msg="$2"
 
     local suffix
     suffix=$(p6_token_random "5")
@@ -28,7 +31,17 @@ p6_github_branch_transliterate() {
 
     local branch
     local user=$USER
-    branch="$user/$kind/$rest#$prefix$suffix"
+
+    case "$P6_DFZ_GH_BRANCH_STYLE" in
+    p6)
+        if ! p6_string_blank "$pr_num"; then
+            branch="$user/$kind/$pr_num/$rest#$prefix$suffix"
+        else
+            branch="$user/$kind/$rest#$prefix$suffix"
+        fi
+        ;;
+    *) branch="$user-$pr_num-$rest" ;;
+    esac
 
     p6_return_str "$branch"
 }

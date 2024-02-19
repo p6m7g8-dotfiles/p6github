@@ -52,7 +52,7 @@
 
 #### p6github/lib/branch.sh:
 
-- str branch = p6_github_branch_transliterate(msg)
+- str branch = p6_github_branch_transliterate(pr_num, msg)
 
 #### p6github/lib/gh.sh:
 
@@ -60,7 +60,7 @@
 - p6_gh()
 - p6_github_gh_pr_list()
 - p6_github_gh_pr_merge_last()
-- p6_github_gh_submit(msg)
+- p6_github_gh_submit(pr_num, ..., msg)
 - p6_github_gh_tidy()
 
 #### p6github/lib/login.sh:
@@ -76,7 +76,7 @@
 ├── gh.sh
 └── login.sh
 
-0 directories, 3 files
+1 directory, 3 files
 ```
 ## Author
 

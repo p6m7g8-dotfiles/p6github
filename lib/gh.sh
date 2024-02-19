@@ -85,15 +85,19 @@ p6_github_gh_pr_merge_last() {
 ######################################################################
 #<
 #
-# Function: p6_github_gh_submit(msg)
+# Function: p6_github_gh_submit(pr_num, ..., msg)
 #
 #  Args:
+#	pr_num -
+#	... - 
 #	msg -
 #
-#  Environment:	 USER
+#  Environment:	 P6_DFZ_GITHUB_REVIEWER_BOT USER
 #>
 ######################################################################
 p6_github_gh_submit() {
+    local pr_num="$1"
+    shift 1
     local msg="$*"
 
     # Step 1: Show current state
@@ -104,7 +108,7 @@ p6_github_gh_submit() {
 
     # Step 3: Checkout a branch
     local branch
-    branch=$(p6_github_branch_transliterate "$msg")
+    branch=$(p6_github_branch_transliterate "$pr_num" "$msg")
     p6_git_p6_branch_create "$branch"
 
     # Step 4: Add
@@ -117,7 +121,11 @@ p6_github_gh_submit() {
     p6_git_p6_push
 
     # Step 7: Create PR
-    p6_gh pr create -a "$USER" -f -r p6m7g8-automation
+    if ! p6_string_blank "$P6_DFZ_GITHUB_REVIEWER_BOT"; then
+        p6_gh pr create -a "$USER" -f -r $P6_DFZ_GITHUB_REVIEWER_BOT
+    else
+        p6_gh pr create -a "$USER" -f
+    fi
 
     # Step 8: Back to default
     p6_git_p6_checkout_default
