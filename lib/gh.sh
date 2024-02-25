@@ -132,3 +132,23 @@ p6_github_gh_submit() {
 
     p6_return_void
 }
+
+######################################################################
+#<
+#
+# Function: p6_github_gh_clone(repo, dir)
+#
+#  Args:
+#	repo -
+#	dir -
+#
+#>
+######################################################################
+p6_github_gh_clone() {
+    local repo="$1"
+    local dir="$2"
+
+    gh repo clone "$repo" "$dir"
+
+    p6_return_void
+}

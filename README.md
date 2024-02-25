@@ -58,6 +58,7 @@
 
 - int pr_id = p6_github_gh_pr_last()
 - p6_gh()
+- p6_github_gh_clone(repo, dir)
 - p6_github_gh_pr_list()
 - p6_github_gh_pr_merge_last()
 - p6_github_gh_submit(pr_num, ..., msg)
