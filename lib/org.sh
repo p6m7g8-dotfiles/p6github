@@ -2,7 +2,7 @@
 ######################################################################
 #<
 #
-# Function: p6_github_login_clone(login, dir)
+# Function: p6_github_org_clone(login, dir)
 #
 #  Args:
 #	login -
@@ -10,7 +10,7 @@
 #
 #>
 ######################################################################
-p6_github_login_clone() {
+p6_github_org_clone() {
     local login="$1"
     local dir="$2"
 

@@ -50,32 +50,34 @@
 
 ### p6github/lib:
 
-#### p6github/lib/branch.sh:
-
-- str branch = p6_github_branch_transliterate(pr_num, msg)
-
 #### p6github/lib/gh.sh:
 
 - int pr_id = p6_github_gh_pr_last()
-- p6_gh()
-- p6_github_gh_clone(repo, dir)
 - p6_github_gh_pr_list()
-- p6_github_gh_pr_merge_last()
-- p6_github_gh_submit(pr_num, ..., msg)
 - p6_github_gh_tidy()
 
-#### p6github/lib/login.sh:
+#### p6github/lib/org.sh:
 
-- p6_github_login_clone(login, dir)
+- p6_github_org_clone(login, dir)
+
+#### p6github/lib/util.sh:
+
+- int pr_id = p6_github_gh_pr_last()
+- p6_github_gh_clone(repo, dir)
+- p6_github_gh_pr_create(reviewer, user)
+- p6_github_gh_pr_list()
+- p6_github_gh_pr_merge_last()
+- p6_github_gh_submit(reviewer, user, pr_num, ..., msg)
+- p6_github_gh_tidy()
 
 
 
 ## Hier
 ```text
 .
-├── branch.sh
 ├── gh.sh
-└── login.sh
+├── org.sh
+└── util.sh
 
 1 directory, 3 files
 ```
