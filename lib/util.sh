@@ -3,25 +3,13 @@
 ######################################################################
 #<
 #
-# Function: p6_gh()
+# Function: p6_github_util_pr_list()
 #
 #>
 ######################################################################
-p6_gh() {
+p6_github_util_pr_list() {
 
-    p6_run_code "gh $@"
-}
-
-######################################################################
-#<
-#
-# Function: p6_github_gh_pr_list()
-#
-#>
-######################################################################
-p6_github_gh_pr_list() {
-
-    p6_gh pr list
+    gh pr list
 
     p6_return_void
 }
@@ -29,13 +17,13 @@ p6_github_gh_pr_list() {
 ######################################################################
 #<
 #
-# Function: p6_github_gh_tidy()
+# Function: p6_github_util_tidy()
 #
 #>
 ######################################################################
-p6_github_gh_tidy() {
+p6_github_util_tidy() {
 
-    p6_run_code "p6_gh tidy"
+    p6_run_code "gh tidy"
 
     p6_return_void
 }
@@ -43,7 +31,7 @@ p6_github_gh_tidy() {
 ######################################################################
 #<
 #
-# Function: int pr_id = p6_github_gh_pr_last()
+# Function: int pr_id = p6_github_util_pr_last()
 #
 #  Returns:
 #	int - pr_id
@@ -51,11 +39,11 @@ p6_github_gh_tidy() {
 #  Environment:	 OPEN
 #>
 ######################################################################
-p6_github_gh_pr_last() {
+p6_github_util_pr_last() {
 
     # Prior PR
     local pr_id
-    pr_id=$(p6_gh pr list | awk '/OPEN/ {print $1}' | head -1)
+    pr_id=$(gh pr list | awk '/OPEN/ {print $1}' | head -1)
 
     p6_return_int "$pr_id"
 }
@@ -63,21 +51,21 @@ p6_github_gh_pr_last() {
 ######################################################################
 #<
 #
-# Function: p6_github_gh_pr_merge_last()
+# Function: p6_github_util_pr_merge_last()
 #
 #>
 ######################################################################
-p6_github_gh_pr_merge_last() {
+p6_github_util_pr_merge_last() {
 
     # Prior PR
     local pr_id
-    pr_id=$(p6_github_gh_pr_last)
+    pr_id=$(p6_github_util_pr_last)
 
     # Merge, Squash, Delete Branch
-    p6_gh pr merge -d -s "$pr_id"
+    gh pr merge -d -s "$pr_id"
 
     # Pull (already on main)
-    p6_git_p6_pull
+    p6_git_cli_pull_rebase_autostash_ff_only
 
     p6_return_void
 }
@@ -85,50 +73,35 @@ p6_github_gh_pr_merge_last() {
 ######################################################################
 #<
 #
-# Function: p6_github_gh_submit(pr_num, ..., msg)
+# Function: p6_github_util_submit(reviewer, user, pr_num, ..., msg)
 #
 #  Args:
+#	reviewer -
+#	user -
 #	pr_num -
 #	... - 
 #	msg -
 #
-#  Environment:	 P6_DFZ_GITHUB_REVIEWER_BOT USER
 #>
 ######################################################################
-p6_github_gh_submit() {
-    local pr_num="$1"
-    shift 1
+p6_github_util_submit() {
+    local reviewer="$1"
+    local user="$2"
+    local pr_num="$3"
+    shift 3
     local msg="$*"
 
-    # Step 1: Show current state
-    p6_git_p6_status
-
-    # Step 2: Show diff
-    p6_git_p6_diff
-
-    # Step 3: Checkout a branch
     local branch
     branch=$(p6_github_branch_transliterate "$pr_num" "$msg")
-    p6_git_p6_branch_create "$branch"
 
-    # Step 4: Add
-    p6_git_p6_add_all
-
-    # Step 5: Commit
-    p6_git_p6_commit "$msg"
-
-    # Step 6: Push
-    p6_git_p6_push
-
-    # Step 7: Create PR
-    if ! p6_string_blank "$P6_DFZ_GITHUB_REVIEWER_BOT"; then
-        p6_gh pr create -a "$USER" -f -r $P6_DFZ_GITHUB_REVIEWER_BOT
-    else
-        p6_gh pr create -a "$USER" -f
-    fi
-
-    # Step 8: Back to default
-    p6_git_p6_checkout_default
+    p6_git_cli_status_s
+    p6_git_cli_diff
+    p6_git_cli_branch_create "$branch"
+    p6_git_cli_add_all
+    p6_git_cli_commit_verbose_with_message "$msg"
+    p6_git_cli_push_u
+    p6_github_util_pr_create "$reviewer" "$user"
+    p6_git_util_checkout_default
 
     p6_return_void
 }
@@ -136,7 +109,31 @@ p6_github_gh_submit() {
 ######################################################################
 #<
 #
-# Function: p6_github_gh_clone(repo, dir)
+# Function: p6_github_util_pr_create(reviewer, user)
+#
+#  Args:
+#	reviewer -
+#	user -
+#
+#>
+######################################################################
+p6_github_util_pr_create() {
+    local reviewer="$1"
+    local user="$2"
+
+    if ! p6_string_blank "$reviewer"; then
+        gh pr create -a "$user" -f -r $reviewer
+    else
+        gh pr create -a "$user" -f
+    fi
+
+    p6_return_void
+}
+
+######################################################################
+#<
+#
+# Function: p6_github_util_clone(repo, dir)
 #
 #  Args:
 #	repo -
@@ -144,7 +141,7 @@ p6_github_gh_submit() {
 #
 #>
 ######################################################################
-p6_github_gh_clone() {
+p6_github_util_clone() {
     local repo="$1"
     local dir="$2"
 
