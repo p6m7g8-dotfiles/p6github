@@ -3,11 +3,11 @@
 ######################################################################
 #<
 #
-# Function: p6_github_gh_pr_list()
+# Function: p6_github_cli_pr_list()
 #
 #>
 ######################################################################
-p6_github_gh_pr_list() {
+p6_github_cli_pr_list() {
 
     gh pr list
 
@@ -17,13 +17,13 @@ p6_github_gh_pr_list() {
 ######################################################################
 #<
 #
-# Function: p6_github_gh_tidy()
+# Function: p6_github_cli_tidy()
 #
 #>
 ######################################################################
-p6_github_gh_tidy() {
+p6_github_cli_tidy() {
 
-    p6_run_code "gh tidy"
+    gh tidy
 
     p6_return_void
 }
@@ -31,16 +31,15 @@ p6_github_gh_tidy() {
 ######################################################################
 #<
 #
-# Function: int pr_id = p6_github_gh_pr_last()
+# Function: int pr_id = p6_github_cli_pr_last()
 #
 #  Returns:
-#	int - pr_id
 #	int - pr_id
 #
 #  Environment:	 OPEN
 #>
 ######################################################################
-p6_github_gh_pr_last() {
+p6_github_cli_pr_last() {
 
     # Prior PR
     local pr_id

@@ -50,11 +50,11 @@
 
 ### p6github/lib:
 
-#### p6github/lib/gh.sh:
+#### p6github/lib/cli.sh:
 
-- int pr_id = p6_github_gh_pr_last()
-- p6_github_gh_pr_list()
-- p6_github_gh_tidy()
+- int pr_id = p6_github_cli_pr_last()
+- p6_github_cli_pr_list()
+- p6_github_cli_tidy()
 
 #### p6github/lib/org.sh:
 
@@ -62,20 +62,20 @@
 
 #### p6github/lib/util.sh:
 
-- int pr_id = p6_github_gh_pr_last()
-- p6_github_gh_clone(repo, dir)
-- p6_github_gh_pr_create(reviewer, user)
-- p6_github_gh_pr_list()
-- p6_github_gh_pr_merge_last()
-- p6_github_gh_submit(reviewer, user, pr_num, ..., msg)
-- p6_github_gh_tidy()
+- int pr_id = p6_github_util_pr_last()
+- p6_github_util_clone(repo, dir)
+- p6_github_util_pr_create(reviewer, user)
+- p6_github_util_pr_list()
+- p6_github_util_pr_merge_last()
+- p6_github_util_submit(reviewer, user, pr_num, ..., msg)
+- p6_github_util_tidy()
 
 
 
 ## Hier
 ```text
 .
-├── gh.sh
+├── cli.sh
 ├── org.sh
 └── util.sh
 
