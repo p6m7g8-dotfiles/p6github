@@ -64,10 +64,10 @@
 
 - int pr_id = p6_github_util_pr_last()
 - p6_github_util_clone(repo, dir)
-- p6_github_util_pr_create(reviewer, user)
+- p6_github_util_pr_create(user, reviewer)
 - p6_github_util_pr_list()
 - p6_github_util_pr_merge_last()
-- p6_github_util_submit(reviewer, user, pr_num, ..., msg)
+- p6_github_util_pr_submit(editor, user, tmpl, [reviewer=], [cli_msg=], [pr_num=])
 - p6_github_util_tidy()
 
 
