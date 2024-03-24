@@ -3,34 +3,6 @@
 ######################################################################
 #<
 #
-# Function: p6_github_util_pr_list()
-#
-#>
-######################################################################
-p6_github_util_pr_list() {
-
-    gh pr list
-
-    p6_return_void
-}
-
-######################################################################
-#<
-#
-# Function: p6_github_util_tidy()
-#
-#>
-######################################################################
-p6_github_util_tidy() {
-
-    gh tidy
-
-    p6_return_void
-}
-
-######################################################################
-#<
-#
 # Function: int pr_id = p6_github_util_pr_last()
 #
 #  Returns:
@@ -43,7 +15,7 @@ p6_github_util_pr_last() {
 
     # Prior PR
     local pr_id
-    pr_id=$(p6_github_util_pr_list | awk '/OPEN/ {print $1}' | head -1)
+    pr_id=$(p6_github_cli_pr_list | awk '/OPEN/ {print $1}' | head -1)
 
     p6_return_int "$pr_id"
 }
@@ -83,6 +55,7 @@ p6_github_util_pr_merge_last() {
 #	OPTIONAL cli_msg - []
 #	OPTIONAL pr_num - []
 #
+#  Environment:	 XXX
 #>
 ######################################################################
 p6_github_util_pr_submit() {
@@ -93,16 +66,19 @@ p6_github_util_pr_submit() {
     local cli_msg="${5:-}"
     local pr_num="${6:-}"
 
-    # p6_transient
-    local file_msg=$(p6_git_util_msg_collect "$ditor" "$cli_msg")
+    # p6_transient: scratch_file
+    p6_git_util_msg_collect "$editor" "$cli_msg" # XXX: can not use $() b/c of $editor Output socket/pipe
+    local file_msg=$scratch_file
+    # unset $scratch_file
+
     local first_line=$(p6_file_line_first "$file_msg")
     local branch=$(p6_git_branch_process "$tmpl" "$user" "$first_line" "$pr_num")
-    local body=$(p6_file_lines_except_first "$file_msg")
+    local all=$(p6_file_display "$file_msg")
     p6_transient_delete "$file_msg"
 
     p6_git_cli_branch_create "$branch"
     p6_git_cli_add_all
-    p6_git_cli_commit_with_message "$body"
+    p6_git_cli_commit_with_message "$all"
     p6_git_cli_push_u
     p6_github_util_pr_create "$user" "$reviewer"
 
@@ -131,26 +107,6 @@ p6_github_util_pr_create() {
     else
         gh pr create -a "$user" -f
     fi
-
-    p6_return_void
-}
-
-######################################################################
-#<
-#
-# Function: p6_github_util_clone(repo, dir)
-#
-#  Args:
-#	repo -
-#	dir -
-#
-#>
-######################################################################
-p6_github_util_clone() {
-    local repo="$1"
-    local dir="$2"
-
-    gh repo clone "$repo" "$dir"
 
     p6_return_void
 }

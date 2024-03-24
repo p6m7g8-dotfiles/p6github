@@ -10,8 +10,7 @@
   - [Summary](#summary)
   - [Contributing](#contributing)
   - [Code of Conduct](#code-of-conduct)
-  - [Changes](#changes)
-    - [Usage](#usage)
+  - [Usage](#usage)
   - [Author](#author)
 
 ### Badges
@@ -34,11 +33,13 @@
 
 - [Code of Conduct](https://github.com/p6m7g8/.github/blob/master/CODE_OF_CONDUCT.md)
 
-## Changes
-
-- [Change Log](CHANGELOG.md)
-
 ## Usage
+
+
+### Aliases
+
+
+### Functions
 
 ### p6github:
 
@@ -53,22 +54,15 @@
 #### p6github/lib/cli.sh:
 
 - int pr_id = p6_github_cli_pr_last()
+- p6_github_cli_clone(repo, dir)
 - p6_github_cli_pr_list()
-- p6_github_cli_tidy()
-
-#### p6github/lib/org.sh:
-
-- p6_github_org_clone(login, dir)
 
 #### p6github/lib/util.sh:
 
 - int pr_id = p6_github_util_pr_last()
-- p6_github_util_clone(repo, dir)
 - p6_github_util_pr_create(user, reviewer)
-- p6_github_util_pr_list()
 - p6_github_util_pr_merge_last()
 - p6_github_util_pr_submit(editor, user, tmpl, [reviewer=], [cli_msg=], [pr_num=])
-- p6_github_util_tidy()
 
 
 
@@ -76,10 +70,9 @@
 ```text
 .
 ├── cli.sh
-├── org.sh
 └── util.sh
 
-1 directory, 3 files
+1 directory, 2 files
 ```
 ## Author
 
