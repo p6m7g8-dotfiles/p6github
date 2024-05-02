@@ -8,8 +8,9 @@
 #>
 ######################################################################
 p6_github_cli_pr_list() {
+    shift 0
 
-    gh pr list
+    gh pr list "$@"
 
     p6_return_void
 }
