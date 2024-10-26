@@ -33,6 +33,12 @@
 
 ## p6github/lib
 
+### p6github/lib/act.sh
+
+- stream  = p6_github_cli_act()
+- stream  = p6_github_cli_act_build()
+- stream  = p6_github_cli_act_release()
+
 ### p6github/lib/cli.sh
 
 - int pr_id = p6_github_cli_pr_last()
@@ -56,10 +62,11 @@
 │   └── current
 ├── init.zsh
 └── lib
+    ├── act.sh
     ├── cli.sh
     └── util.sh
 
-3 directories, 6 files
+3 directories, 7 files
 ```
 
 ## Author
