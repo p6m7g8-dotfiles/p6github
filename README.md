@@ -51,6 +51,11 @@
 - p6_github_util_pr_create(user, reviewer)
 - p6_github_util_pr_merge_last()
 - p6_github_util_pr_submit(editor, user, tmpl, [reviewer=], [cli_msg=], [pr_num=])
+- p6_github_util_repo_archive()
+- p6_github_util_repo_patch(state)
+- p6_github_util_repo_rename(orig_org_repo, new_org_repo)
+- p6_github_util_repo_rename_strip_leading_underscores(orig_org_repo, org, repo)
+- p6_github_util_repo_unarchive()
 
 ## Hierarchy
 
