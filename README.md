@@ -56,15 +56,15 @@
 
 ```text
 .
-├── README.md
 ├── conf
 │   ├── all
 │   └── current
 ├── init.zsh
-└── lib
-    ├── act.sh
-    ├── cli.sh
-    └── util.sh
+├── lib
+│   ├── act.sh
+│   ├── cli.sh
+│   └── util.sh
+└── README.md
 
 3 directories, 7 files
 ```
