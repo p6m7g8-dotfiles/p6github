@@ -110,3 +110,102 @@ p6_github_util_pr_create() {
 
     p6_return_void
 }
+
+######################################################################
+#<
+#
+# Function: p6_github_util_repo_patch(state)
+#
+#  Args:
+#	state -
+#
+#  Environment:	 PATCH
+#>
+######################################################################
+p6_github_util_repo_patch() {
+    local state="$1"
+
+     echo gh api --method PATCH -H "Accept: application/vnd.github+json" /repos/:owner/:repo -f archived=$state
+     gh api --method PATCH -H "Accept: application/vnd.github+json" /repos/:owner/:repo -f archived=$state
+
+    p6_return_void
+}
+
+######################################################################
+#<
+#
+# Function: p6_github_util_repo_archive()
+#
+#>
+######################################################################
+p6_github_util_repo_archive() {
+
+  p6_github_util_repo_patch "true"
+
+  p6_return_void
+}
+
+######################################################################
+#<
+#
+# Function: p6_github_util_repo_unarchive()
+#
+#>
+######################################################################
+p6_github_util_repo_unarchive() {
+
+  p6_github_util_repo_patch "false"
+
+  p6_return_void
+}
+
+######################################################################
+#<
+#
+# Function: p6_github_util_repo_rename(orig_org_repo, new_org_repo)
+#
+#  Args:
+#	orig_org_repo -
+#	new_org_repo -
+#
+#  Environment:	 PATCH
+#>
+######################################################################
+p6_github_util_repo_rename() {
+    local orig_org_repo="$1"
+    local new_org_repo="$2"
+
+    echo  gh api --method PATCH -H "Accept: application/vnd.github+json" /repos/"$orig_org_repo" -f name="${new_org_repo#*/}"
+    gh api --method PATCH -H "Accept: application/vnd.github+json" /repos/"$orig_org_repo" -f name="${new_org_repo#*/}"
+
+    p6_return_void
+}
+
+######################################################################
+#<
+#
+# Function: p6_github_util_repo_rename_strip_leading_underscores(orig_org_repo, org, repo)
+#
+#  Args:
+#	orig_org_repo -
+#	org -
+#	repo -
+#
+#>
+######################################################################
+p6_github_util_repo_rename_strip_leading_underscores() {
+    local orig_org_repo="$1"
+
+    local org="${orig_org_repo%%/*}"
+    local repo="${orig_org_repo#*/}"
+    local new_repo
+
+    new_repo="$(echo "$repo" | sed 's/^_*\(.*\)/\1/')"
+
+    if [ "$repo" != "$new_repo" ]; then
+        local new_org_repo="${org}/${new_repo}"
+        p6_github_util_repo_rename "$orig_org_repo" "$new_org_repo"
+    fi
+
+    p6_return_void
+}
