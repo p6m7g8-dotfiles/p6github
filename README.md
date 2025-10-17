@@ -54,8 +54,9 @@
 - p6_github_util_repo_archive()
 - p6_github_util_repo_patch(state)
 - p6_github_util_repo_rename(orig_org_repo, new_org_repo)
-- p6_github_util_repo_rename_strip_leading_underscores(orig_org_repo, org, repo)
+- p6_github_util_repo_rename_strip_leading_underscores(orig_org_repo)
 - p6_github_util_repo_unarchive()
+- p6_github_util_repo_workflow_upgrade_main_run()
 
 ## Hierarchy
 

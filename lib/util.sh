@@ -184,12 +184,10 @@ p6_github_util_repo_rename() {
 ######################################################################
 #<
 #
-# Function: p6_github_util_repo_rename_strip_leading_underscores(orig_org_repo, org, repo)
+# Function: p6_github_util_repo_rename_strip_leading_underscores(orig_org_repo)
 #
 #  Args:
 #	orig_org_repo -
-#	org -
-#	repo -
 #
 #>
 ######################################################################
@@ -206,6 +204,21 @@ p6_github_util_repo_rename_strip_leading_underscores() {
         local new_org_repo="${org}/${new_repo}"
         p6_github_util_repo_rename "$orig_org_repo" "$new_org_repo"
     fi
+
+    p6_return_void
+}
+
+######################################################################
+#<
+#
+# Function: p6_github_util_repo_workflow_upgrade_main_run()
+#
+#>
+######################################################################
+p6_github_util_repo_workflow_upgrade_main_run() {
+
+    echo gh workflow run upgrade-main
+    gh workflow run upgrade-main
 
     p6_return_void
 }
