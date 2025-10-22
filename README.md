@@ -57,6 +57,10 @@
 - p6_github_util_repo_rename_strip_leading_underscores(orig_org_repo)
 - p6_github_util_repo_unarchive()
 - p6_github_util_repo_workflow_upgrade_main_run()
+- p6_github_util_ruleset_branch_activate([ruleset_name=default])
+- p6_github_util_ruleset_branch_create([ruleset_name=default])
+- p6_github_util_ruleset_branch_deactivate([ruleset_name=default])
+- p6_github_util_ruleset_branch_update(...)
 
 ## Hierarchy
 

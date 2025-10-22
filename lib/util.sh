@@ -222,3 +222,75 @@ p6_github_util_repo_workflow_upgrade_main_run() {
 
     p6_return_void
 }
+
+######################################################################
+#<
+#
+# Function: p6_github_util_ruleset_branch_activate([ruleset_name=default])
+#
+#  Args:
+#	OPTIONAL ruleset_name - [default]
+#
+#>
+######################################################################
+p6_github_util_ruleset_branch_activate() {
+  local ruleset_name="${1:-default}"
+
+  gh ruleset-branch activate "$ruleset_name"
+
+  p6_return_void
+}
+
+######################################################################
+#<
+#
+# Function: p6_github_util_ruleset_branch_deactivate([ruleset_name=default])
+#
+#  Args:
+#	OPTIONAL ruleset_name - [default]
+#
+#>
+######################################################################
+p6_github_util_ruleset_branch_deactivate() {
+  local ruleset_name="${1:-default}"
+
+  gh ruleset-branch deactivate "$ruleset_name"
+
+  p6_return_void
+}
+
+######################################################################
+#<
+#
+# Function: p6_github_util_ruleset_branch_create([ruleset_name=default])
+#
+#  Args:
+#	OPTIONAL ruleset_name - [default]
+#
+#>
+######################################################################
+p6_github_util_ruleset_branch_create() {
+  local ruleset_name="${1:-default}"
+
+  gh ruleset-branch create "$ruleset_name"
+
+  p6_return_void
+}
+
+######################################################################
+#<
+#
+# Function: p6_github_util_ruleset_branch_update(...)
+#
+#  Args:
+#	... - 
+#
+#>
+######################################################################
+p6_github_util_ruleset_branch_update() {
+    shift 0
+
+    gh ruleset-branch update "$@"
+
+    p6_return_void
+}
