@@ -68,6 +68,7 @@ p6_github_util_pr_submit() {
 
     # p6_transient: scratch_file
     p6_git_util_msg_collect "$editor" "$cli_msg" # XXX: can not use $() b/c of $editor Output socket/pipe
+    # shellcheck disable=2154
     local file_msg=$scratch_file
     # unset $scratch_file
 
@@ -103,7 +104,7 @@ p6_github_util_pr_create() {
     local reviewer="$2"
 
     if ! p6_string_blank "$reviewer"; then
-        gh pr create -a "$user" -f -r $reviewer
+        gh pr create -a "$user" -f -r "$reviewer"
     else
         gh pr create -a "$user" -f
     fi
@@ -125,8 +126,8 @@ p6_github_util_pr_create() {
 p6_github_util_repo_patch() {
     local state="$1"
 
-     echo gh api --method PATCH -H "Accept: application/vnd.github+json" /repos/:owner/:repo -f archived=$state
-     gh api --method PATCH -H "Accept: application/vnd.github+json" /repos/:owner/:repo -f archived=$state
+     echo gh api --method PATCH -H "Accept: application/vnd.github+json" /repos/:owner/:repo -f archived="$state"
+     gh api --method PATCH -H "Accept: application/vnd.github+json" /repos/:owner/:repo -f archived="$state"
 
     p6_return_void
 }
@@ -198,7 +199,7 @@ p6_github_util_repo_rename_strip_leading_underscores() {
     local repo="${orig_org_repo#*/}"
     local new_repo
 
-    new_repo="$(echo "$repo" | sed 's/^_*\(.*\)/\1/')"
+    new_repo="${repo##*_}"
 
     if [ "$repo" != "$new_repo" ]; then
         local new_org_repo="${org}/${new_repo}"
