@@ -184,12 +184,10 @@ p6_github_util_repo_rename() {
 ######################################################################
 #<
 #
-# Function: p6_github_util_repo_rename_strip_leading_underscores(orig_org_repo, org, repo)
+# Function: p6_github_util_repo_rename_strip_leading_underscores(orig_org_repo)
 #
 #  Args:
 #	orig_org_repo -
-#	org -
-#	repo -
 #
 #>
 ######################################################################
@@ -206,6 +204,93 @@ p6_github_util_repo_rename_strip_leading_underscores() {
         local new_org_repo="${org}/${new_repo}"
         p6_github_util_repo_rename "$orig_org_repo" "$new_org_repo"
     fi
+
+    p6_return_void
+}
+
+######################################################################
+#<
+#
+# Function: p6_github_util_repo_workflow_upgrade_main_run()
+#
+#>
+######################################################################
+p6_github_util_repo_workflow_upgrade_main_run() {
+
+    echo gh workflow run upgrade-main
+    gh workflow run upgrade-main
+
+    p6_return_void
+}
+
+######################################################################
+#<
+#
+# Function: p6_github_util_ruleset_branch_activate([ruleset_name=default])
+#
+#  Args:
+#	OPTIONAL ruleset_name - [default]
+#
+#>
+######################################################################
+p6_github_util_ruleset_branch_activate() {
+  local ruleset_name="${1:-default}"
+
+  gh ruleset-branch activate "$ruleset_name"
+
+  p6_return_void
+}
+
+######################################################################
+#<
+#
+# Function: p6_github_util_ruleset_branch_deactivate([ruleset_name=default])
+#
+#  Args:
+#	OPTIONAL ruleset_name - [default]
+#
+#>
+######################################################################
+p6_github_util_ruleset_branch_deactivate() {
+  local ruleset_name="${1:-default}"
+
+  gh ruleset-branch deactivate "$ruleset_name"
+
+  p6_return_void
+}
+
+######################################################################
+#<
+#
+# Function: p6_github_util_ruleset_branch_create([ruleset_name=default])
+#
+#  Args:
+#	OPTIONAL ruleset_name - [default]
+#
+#>
+######################################################################
+p6_github_util_ruleset_branch_create() {
+  local ruleset_name="${1:-default}"
+
+  gh ruleset-branch create "$ruleset_name"
+
+  p6_return_void
+}
+
+######################################################################
+#<
+#
+# Function: p6_github_util_ruleset_branch_update(...)
+#
+#  Args:
+#	... - 
+#
+#>
+######################################################################
+p6_github_util_ruleset_branch_update() {
+    shift 0
+
+    gh ruleset-branch update "$@"
 
     p6_return_void
 }
