@@ -5,8 +5,6 @@
 ## Badges
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-yellowgreen.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Mergify](https://img.shields.io/endpoint.svg?url=https://gh.mergify.io/badges//p6github/&style=flat)](https://mergify.io)
-[![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](<https://gitpod.io/#https://github.com//p6github>)
 
 ## Summary
 
@@ -60,6 +58,7 @@
 - p6_github_util_ruleset_branch_activate([ruleset_name=default])
 - p6_github_util_ruleset_branch_create([ruleset_name=default])
 - p6_github_util_ruleset_branch_deactivate([ruleset_name=default])
+- p6_github_util_ruleset_branch_delete([ruleset_name=default])
 - p6_github_util_ruleset_branch_update(...)
 
 ## Hierarchy

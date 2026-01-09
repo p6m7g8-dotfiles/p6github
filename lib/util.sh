@@ -281,6 +281,24 @@ p6_github_util_ruleset_branch_create() {
 ######################################################################
 #<
 #
+# Function: p6_github_util_ruleset_branch_delete([ruleset_name=default])
+#
+#  Args:
+#	OPTIONAL ruleset_name - [default]
+#
+#>
+######################################################################
+p6_github_util_ruleset_branch_delete() {
+  local ruleset_name="${1:-default}"
+
+  gh ruleset-branch delete "$ruleset_name"
+
+  p6_return_void
+}
+
+######################################################################
+#<
+#
 # Function: p6_github_util_ruleset_branch_update(...)
 #
 #  Args:
