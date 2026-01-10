@@ -60,6 +60,7 @@
 - p6_github_util_ruleset_branch_deactivate([ruleset_name=default])
 - p6_github_util_ruleset_branch_delete([ruleset_name=default])
 - p6_github_util_ruleset_branch_update(...)
+- str version = p6_github_util_action_version_latest(action)
 
 ## Hierarchy
 
