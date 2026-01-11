@@ -38,6 +38,22 @@ p6_github_cli_pr_last() {
 ######################################################################
 #<
 #
+# Function: p6_github_cli_pr_view_web(pr)
+#
+#  Args:
+#	pr -
+#
+#>
+######################################################################
+p6_github_cli_pr_view_web() {
+    local pr="$1"
+
+    gh pr view -w "$pr"
+}
+
+######################################################################
+#<
+#
 # Function: p6_github_cli_clone(repo, dir)
 #
 #  Args:
@@ -53,20 +69,4 @@ p6_github_cli_clone() {
     gh repo clone "$repo" "$dir"
 
     p6_return_void
-}
-
-######################################################################
-#<
-#
-# Function: p6_github_cli_view_web(pr)
-#
-#  Args:
-#	pr -
-#
-#>
-######################################################################
-p6_github_cli_view_web() {
-    local pr="$1"
-
-    gh pr view -w "$pr"
 }

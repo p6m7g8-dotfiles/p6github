@@ -42,7 +42,7 @@
 - int pr_id = p6_github_cli_pr_last()
 - p6_github_cli_clone(repo, dir)
 - p6_github_cli_pr_list()
-- p6_github_cli_view_web(pr)
+- p6_github_cli_pr_view_web(pr)
 
 ### p6github/lib/util.sh
 
