@@ -330,7 +330,8 @@ p6_github_util_ruleset_branch_update() {
 p6_github_util_action_version_latest() {
     local action="$1"
 
-    local version=$(curl -siL https://github.com/$action/releases | grep "<h2 class=\"sr-only\" id=" |head -1 |sed -e 's,^.*\">,,' -e 's,</h2>,,')
+    local version
+    version=$(curl -s "https://api.github.com/repos/$action/releases/latest" | jq -r '.tag_name')
 
     p6_return_str "$version"
 }
