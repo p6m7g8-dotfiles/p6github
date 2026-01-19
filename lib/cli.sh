@@ -41,7 +41,6 @@ p6_github_cli_pr_list() {
 #  Returns:
 #	int - pr_id
 #
-#  Environment:	 OPEN
 #>
 ######################################################################
 p6_github_cli_pr_last() {

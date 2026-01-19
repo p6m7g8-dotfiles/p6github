@@ -8,7 +8,6 @@
 #  Returns:
 #	int - pr_id
 #
-#  Environment:	 OPEN
 #>
 ######################################################################
 p6_github_util_pr_last() {
@@ -55,7 +54,6 @@ p6_github_util_pr_merge_last() {
 #	OPTIONAL cli_msg - []
 #	OPTIONAL pr_num - []
 #
-#  Environment:	 XXX
 #>
 ######################################################################
 p6_github_util_pr_submit() {
@@ -120,7 +118,6 @@ p6_github_util_pr_create() {
 #  Args:
 #	state -
 #
-#  Environment:	 PATCH
 #>
 ######################################################################
 p6_github_util_repo_patch() {
@@ -169,7 +166,6 @@ p6_github_util_repo_unarchive() {
 #	orig_org_repo -
 #	new_org_repo -
 #
-#  Environment:	 PATCH
 #>
 ######################################################################
 p6_github_util_repo_rename() {
