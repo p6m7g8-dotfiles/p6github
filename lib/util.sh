@@ -14,7 +14,7 @@ p6_github_util_pr_last() {
 
     # Prior PR
     local pr_id
-    pr_id=$(p6_github_cli_pr_list | awk '/OPEN/ {print $1}' | head -1)
+    pr_id=$(p6_github_cli_pr_list | p6_filter_row_select "OPEN" | p6_filter_column_pluck 1 | p6_filter_row_first 1)
 
     p6_return_int "$pr_id"
 }

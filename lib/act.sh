@@ -3,7 +3,10 @@
 ######################################################################
 #<
 #
-# Function: stream  = p6_github_cli_act()
+# Function: stream  = p6_github_cli_act(...)
+#
+#  Args:
+#	... - 
 #
 #  Returns:
 #	stream - 
