@@ -39,25 +39,6 @@ p6_github_cli_pr_list() {
 ######################################################################
 #<
 #
-# Function: int pr_id = p6_github_cli_pr_last()
-#
-#  Returns:
-#	int - pr_id
-#
-#>
-######################################################################
-p6_github_cli_pr_last() {
-
-    # Prior PR
-    local pr_id
-    pr_id=$(gh pr list | p6_filter_row_select "OPEN" | p6_filter_column_pluck 1 | p6_filter_row_first 1)
-
-    p6_return_int "$pr_id"
-}
-
-######################################################################
-#<
-#
 # Function: p6_github_cli_pr_view_web(pr)
 #
 #  Args:
@@ -69,6 +50,24 @@ p6_github_cli_pr_view_web() {
     local pr="$1"
 
     gh pr view -w "$pr"
+}
+
+######################################################################
+#<
+#
+# Function: p6_github_cli_pr_merge_squash_delete(pr)
+#
+#  Args:
+#	pr -
+#
+#>
+######################################################################
+p6_github_cli_pr_merge_squash_delete() {
+    local pr="$1"
+
+    gh pr merge -d -s "$pr"
+
+    p6_return_void
 }
 
 ######################################################################
