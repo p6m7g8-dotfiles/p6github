@@ -3,7 +3,10 @@
 ######################################################################
 #<
 #
-# Function: p6_github_cli_pr_checkout()
+# Function: p6_github_cli_pr_checkout(...)
+#
+#  Args:
+#	... - 
 #
 #>
 ######################################################################
@@ -47,7 +50,7 @@ p6_github_cli_pr_last() {
 
     # Prior PR
     local pr_id
-    pr_id=$(gh pr list | awk '/OPEN/ {print $1}' | head -1)
+    pr_id=$(gh pr list | p6_filter_row_select "OPEN" | p6_filter_column_pluck 1 | p6_filter_row_first 1)
 
     p6_return_int "$pr_id"
 }

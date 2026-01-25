@@ -48,7 +48,7 @@ TODO: Add a short summary of this module.
 
 ##### p6github/lib/act.sh
 
-- `stream  = p6_github_cli_act()`
+- `stream  = p6_github_cli_act(...)`
 - `stream  = p6_github_cli_act_build()`
 - `stream  = p6_github_cli_act_release()`
 
@@ -56,7 +56,7 @@ TODO: Add a short summary of this module.
 
 - `int pr_id = p6_github_cli_pr_last()`
 - `p6_github_cli_clone(repo, dir)`
-- `p6_github_cli_pr_checkout()`
+- `p6_github_cli_pr_checkout(...)`
 - `p6_github_cli_pr_list(...)`
 - `p6_github_cli_pr_view_web(pr)`
 
