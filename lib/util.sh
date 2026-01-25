@@ -82,6 +82,47 @@ p6_github_util_pr_merge_oldest() {
     p6_return_void
 }
 
+######################################################################
+#<
+#
+# Function: p6_github_util_pr_poll_while_open([pr_id=], [delay=1])
+#
+#  Args:
+#	OPTIONAL pr_id - []
+#	OPTIONAL delay - [1]
+#
+#>
+######################################################################
+p6_github_util_pr_poll_while_open() {
+    local pr_id="${1:-}"
+    local delay="${2:-1}"
+
+    if p6_string_blank "$pr_id"; then
+        pr_id=$(p6_github_util_pr_oldest)
+    fi
+
+    while :; do
+        local state
+        state=$(gh pr view "$pr_id" --json state -q .state 2>/dev/null)
+        local rc=$?
+
+        if p6_string_ne_0 "$rc"; then
+            p6_retry__debug "pr_poll_while_open(): pr=$pr_id view_failed rc=$rc sleep=$delay"
+            delay=$(p6_retry_delay_doubling "$delay")
+            continue
+        fi
+
+        if p6_string_ne "$state" "OPEN"; then
+            break
+        fi
+
+        p6_retry__debug "pr_poll_while_open(): pr=$pr_id state=$state sleep=$delay"
+        delay=$(p6_retry_delay_doubling "$delay")
+    done
+
+    p6_return_void
+}
+
 
 ######################################################################
 #<
