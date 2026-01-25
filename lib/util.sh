@@ -22,6 +22,25 @@ p6_github_util_pr_last() {
 ######################################################################
 #<
 #
+# Function: int pr_id = p6_github_util_pr_oldest()
+#
+#  Returns:
+#	int - pr_id
+#
+#>
+######################################################################
+p6_github_util_pr_oldest() {
+
+    # Oldest PR
+    local pr_id
+    pr_id=$(p6_github_cli_pr_list | p6_filter_row_select "OPEN" | p6_filter_column_pluck 1 | p6_filter_row_last 1)
+
+    p6_return_int "$pr_id"
+}
+
+######################################################################
+#<
+#
 # Function: p6_github_util_pr_merge_last()
 #
 #>
@@ -33,13 +52,36 @@ p6_github_util_pr_merge_last() {
     pr_id=$(p6_github_util_pr_last)
 
     # Merge, Squash, Delete Branch
-    gh pr merge -d -s "$pr_id"
+    p6_github_cli_pr_merge_squash_delete "$pr_id"
 
     # Pull (already on main)
     p6_git_cli_pull_rebase_autostash_ff_only
 
     p6_return_void
 }
+
+######################################################################
+#<
+#
+# Function: p6_github_util_pr_merge_oldest()
+#
+#>
+######################################################################
+p6_github_util_pr_merge_oldest() {
+
+    # Prior PR
+    local pr_id
+    pr_id=$(p6_github_util_pr_oldest)
+
+    # Merge, Squash, Delete Branch
+    p6_github_cli_pr_merge_squash_delete "$pr_id"
+
+    # Pull (already on main)
+    p6_git_cli_pull_rebase_autostash_ff_only
+
+    p6_return_void
+}
+
 
 ######################################################################
 #<
