@@ -125,7 +125,7 @@ p6_github_util_pr_poll_while_open() {
 
     while :; do
         local state
-        state=$(gh pr view "$pr_id" --json state -q .state 2>/dev/null)
+        state=$(p6_github_cli_pr_view "$pr_id" --json state -q .state 2>/dev/null)
         local rc=$?
 
         if p6_string_ne_0 "$rc"; then
@@ -207,9 +207,9 @@ p6_github_util_pr_create() {
     local reviewer="$2"
 
     if ! p6_string_blank "$reviewer"; then
-        gh pr create -a "$user" -f -r "$reviewer"
+        p6_github_cli_pr_create -a "$user" -f -r "$reviewer"
     else
-        gh pr create -a "$user" -f
+        p6_github_cli_pr_create -a "$user" -f
     fi
 
     p6_return_void
@@ -228,8 +228,8 @@ p6_github_util_pr_create() {
 p6_github_util_repo_patch() {
     local state="$1"
 
-     echo gh api --method PATCH -H "Accept: application/vnd.github+json" /repos/:owner/:repo -f archived="$state"
-     gh api --method PATCH -H "Accept: application/vnd.github+json" /repos/:owner/:repo -f archived="$state"
+     echo p6_github_cli_api --method PATCH -H "Accept: application/vnd.github+json" /repos/:owner/:repo -f archived="$state"
+     p6_github_cli_api --method PATCH -H "Accept: application/vnd.github+json" /repos/:owner/:repo -f archived="$state"
 
     p6_return_void
 }
@@ -277,8 +277,8 @@ p6_github_util_repo_rename() {
     local orig_org_repo="$1"
     local new_org_repo="$2"
 
-    echo  gh api --method PATCH -H "Accept: application/vnd.github+json" /repos/"$orig_org_repo" -f name="${new_org_repo#*/}"
-    gh api --method PATCH -H "Accept: application/vnd.github+json" /repos/"$orig_org_repo" -f name="${new_org_repo#*/}"
+    echo  p6_github_cli_api --method PATCH -H "Accept: application/vnd.github+json" /repos/"$orig_org_repo" -f name="${new_org_repo#*/}"
+    p6_github_cli_api --method PATCH -H "Accept: application/vnd.github+json" /repos/"$orig_org_repo" -f name="${new_org_repo#*/}"
 
     p6_return_void
 }
@@ -319,98 +319,8 @@ p6_github_util_repo_rename_strip_leading_underscores() {
 ######################################################################
 p6_github_util_repo_workflow_upgrade_main_run() {
 
-    echo gh workflow run upgrade-main
-    gh workflow run upgrade-main
-
-    p6_return_void
-}
-
-######################################################################
-#<
-#
-# Function: p6_github_util_ruleset_branch_activate([ruleset_name=default])
-#
-#  Args:
-#	OPTIONAL ruleset_name - [default]
-#
-#>
-######################################################################
-p6_github_util_ruleset_branch_activate() {
-  local ruleset_name="${1:-default}"
-
-  gh ruleset-branch activate "$ruleset_name"
-
-  p6_return_void
-}
-
-######################################################################
-#<
-#
-# Function: p6_github_util_ruleset_branch_deactivate([ruleset_name=default])
-#
-#  Args:
-#	OPTIONAL ruleset_name - [default]
-#
-#>
-######################################################################
-p6_github_util_ruleset_branch_deactivate() {
-  local ruleset_name="${1:-default}"
-
-  gh ruleset-branch deactivate "$ruleset_name"
-
-  p6_return_void
-}
-
-######################################################################
-#<
-#
-# Function: p6_github_util_ruleset_branch_create([ruleset_name=default])
-#
-#  Args:
-#	OPTIONAL ruleset_name - [default]
-#
-#>
-######################################################################
-p6_github_util_ruleset_branch_create() {
-  local ruleset_name="${1:-default}"
-
-  gh ruleset-branch create "$ruleset_name"
-
-  p6_return_void
-}
-
-######################################################################
-#<
-#
-# Function: p6_github_util_ruleset_branch_delete([ruleset_name=default])
-#
-#  Args:
-#	OPTIONAL ruleset_name - [default]
-#
-#>
-######################################################################
-p6_github_util_ruleset_branch_delete() {
-  local ruleset_name="${1:-default}"
-
-  gh ruleset-branch delete "$ruleset_name"
-
-  p6_return_void
-}
-
-######################################################################
-#<
-#
-# Function: p6_github_util_ruleset_branch_update(...)
-#
-#  Args:
-#	... - 
-#
-#>
-######################################################################
-p6_github_util_ruleset_branch_update() {
-    shift 0
-
-    gh ruleset-branch update "$@"
+    echo p6_github_cli_workflow_run upgrade-main
+    p6_github_cli_workflow_run upgrade-main
 
     p6_return_void
 }
