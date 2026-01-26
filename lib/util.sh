@@ -85,6 +85,28 @@ p6_github_util_pr_merge_oldest() {
 ######################################################################
 #<
 #
+# Function: str state = p6_github_util_pr_state_get(pr_id)
+#
+#  Args:
+#	pr_id -
+#
+#  Returns:
+#	str - state
+#
+#>
+######################################################################
+p6_github_util_pr_state_get() {
+    local pr_id="$1"
+
+    local state
+    state=$(p6_github_cli_pr_view "$pr_id" --json state -q .state)
+
+    p6_return_str "$state"
+}
+
+######################################################################
+#<
+#
 # Function: p6_github_util_pr_poll_while_open([pr_id=], [delay=1])
 #
 #  Args:

@@ -39,6 +39,26 @@ p6_github_cli_pr_list() {
 ######################################################################
 #<
 #
+# Function: p6_github_cli_pr_view(pr, ...)
+#
+#  Args:
+#	pr -
+#	... -
+#
+#>
+######################################################################
+p6_github_cli_pr_view() {
+    local pr="$1"
+    shift 1
+
+    gh pr view "$pr" "$@"
+
+    p6_return_void
+}
+
+######################################################################
+#<
+#
 # Function: p6_github_cli_pr_view_web(pr)
 #
 #  Args:
@@ -49,7 +69,9 @@ p6_github_cli_pr_list() {
 p6_github_cli_pr_view_web() {
     local pr="$1"
 
-    gh pr view -w "$pr"
+    p6_github_cli_pr_view "$pr" -w
+
+    p6_return_void
 }
 
 ######################################################################
