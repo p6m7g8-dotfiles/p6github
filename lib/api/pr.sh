@@ -206,7 +206,7 @@ p6_github_api_pr_create() {
     local user="$1"
     local reviewer="$2"
 
-    if ! p6_string_blank "$reviewer"; then
+    if p6_string_blank_NOT "$reviewer"; then
         p6_github_cli_pr_create -a "$user" -f -r "$reviewer"
     else
         p6_github_cli_pr_create -a "$user" -f
