@@ -113,6 +113,26 @@ p6_github_cli_pr_merge_squash_delete() {
 ######################################################################
 #<
 #
+# Function: p6_github_cli_repo_list(owner, ...)
+#
+#  Args:
+#	owner -
+#	... -
+#
+#>
+######################################################################
+p6_github_cli_repo_list() {
+    local owner="$1"
+    shift 1
+
+    gh repo list "$owner" "$@" 2>/dev/null
+
+    p6_return_void
+}
+
+######################################################################
+#<
+#
 # Function: p6_github_cli_clone(repo, dir)
 #
 #  Args:
