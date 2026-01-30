@@ -1,4 +1,29 @@
-# shellcheck shell=bash
+######################################################################
+#<
+#
+# Function: p6_github_api_repo_rename_strip_leading_underscores(orig_org_repo)
+#
+#  Args:
+#	orig_org_repo -
+#
+#>
+######################################################################
+p6_github_api_repo_rename_strip_leading_underscores() {
+    local orig_org_repo="$1"
+
+    local org="${orig_org_repo%%/*}"
+    local repo="${orig_org_repo#*/}"
+    local new_repo
+
+    new_repo="$(echo "$repo" | p6_filter_leading_underscores_strip)"
+
+    if p6_string_ne "$repo" "$new_repo"; then
+        local new_org_repo="${org}/${new_repo}"
+        p6_github_api_repo_rename "$orig_org_repo" "$new_org_repo"
+    fi
+
+    p6_return_void
+}
 
 ######################################################################
 #<
@@ -213,4 +238,27 @@ p6_github_api_pr_create() {
     fi
 
     p6_return_void
+}
+
+
+######################################################################
+#<
+#
+# Function: str version = p6_github_api_action_version_latest(action)
+#
+#  Args:
+#	action -
+#
+#  Returns:
+#	str - version
+#
+#>
+######################################################################
+p6_github_api_action_version_latest() {
+    local action="$1"
+
+    local version
+    version=$(curl -s "https://api.github.com/repos/$action/releases/latest" | jq -r '.tag_name')
+
+    p6_return_str "$version"
 }
