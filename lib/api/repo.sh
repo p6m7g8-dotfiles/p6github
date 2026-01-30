@@ -5,6 +5,51 @@
 ######################################################################
 #<
 #
+# Function: code p6_github_api_repo_exists(owner, repo)
+#
+#  Args:
+#	owner -
+#	repo -
+#
+#  Returns:
+#	code - 0 if exists, 1 if not found
+#
+#>
+######################################################################
+p6_github_api_repo_exists() {
+    local owner="$1"
+    local repo="$2"
+
+    if p6_github_cli_api "repos/$owner/$repo" --silent >/dev/null 2>&1; then
+        p6_return_code_as_code 0
+    else
+        p6_return_code_as_code 1
+    fi
+}
+
+######################################################################
+#<
+#
+# Function: p6_github_api_repo_get(owner, repo)
+#
+#  Args:
+#	owner -
+#	repo -
+#
+#>
+######################################################################
+p6_github_api_repo_get() {
+    local owner="$1"
+    local repo="$2"
+
+    p6_github_cli_api "repos/$owner/$repo" 2>/dev/null
+
+    p6_return_void
+}
+
+######################################################################
+#<
+#
 # Function: p6_github_api_repo_show([name=])
 #
 #  Args:
@@ -35,7 +80,7 @@ p6_github_api_repo_list() {
     local owner="$1"
     shift 1
 
-    gh repo-mgmt list "$owner" "$@"
+    gh repo-mgmt list "$owner" "$@" 2>/dev/null
 
     p6_return_void
 }
@@ -56,6 +101,26 @@ p6_github_api_repo_update() {
     shift 1
 
     gh repo-mgmt update "$name" "$@"
+
+    p6_return_void
+}
+
+######################################################################
+#<
+#
+# Function: p6_github_api_repo_topics_get(owner, repo)
+#
+#  Args:
+#	owner -
+#	repo -
+#
+#>
+######################################################################
+p6_github_api_repo_topics_get() {
+    local owner="$1"
+    local repo="$2"
+
+    p6_github_cli_api "repos/$owner/$repo/topics" -H "Accept: application/vnd.github.mercy-preview+json" 2>/dev/null
 
     p6_return_void
 }
