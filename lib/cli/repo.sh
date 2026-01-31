@@ -156,7 +156,7 @@ p6_github_cli_repo_topics_list() {
     local org="$1"
     local repo="$2"
 
-    p6_github_cli_repo_view_json "$org" "$repo" "topics" '.topics[]'
+    p6_github_cli_repo_view_json "$org" "$repo" "repositoryTopics" '.repositoryTopics[].name'
 
     p6_return_stream
 }
@@ -186,17 +186,15 @@ p6_github_cli_repo_topic_add() {
 ######################################################################
 #<
 #
-# Function: p6_github_cli_repo_topic_add(repo, topic, repo, topic)
+# Function: p6_github_cli_repo_topic_remove(repo, topic)
 #
 #  Args:
-#	repo -
-#	topic -
 #	repo -
 #	topic -
 #
 #>
 ######################################################################
-p6_github_cli_repo_topic_add() {
+p6_github_cli_repo_topic_remove() {
     local repo="$1"
     local topic="$2"
 
@@ -467,7 +465,7 @@ p6_github_cli_repo_homepage_get() {
     local org="$1"
     local repo="$2"
 
-    local home=$(p6_github_cli_repo_view_json "$org" "$repo" "homepage" '.homepage')
+    local home=$(p6_github_cli_repo_view_json "$org" "$repo" "homepageUrl" '.homepageUrl')
 
     p6_return_str "$home"
 }
