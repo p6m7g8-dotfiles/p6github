@@ -1,25 +1,25 @@
 ######################################################################
 #<
 #
-# Function: p6_github_api_repo_rename_strip_leading_underscores(orig_org_repo)
+# Function: p6_github_util_repo_rename_strip_leading_underscores(orig_org_repo)
 #
 #  Args:
 #	orig_org_repo -
 #
 #>
 ######################################################################
-p6_github_api_repo_rename_strip_leading_underscores() {
+p6_github_util_repo_rename_strip_leading_underscores() {
     local orig_org_repo="$1"
 
     local org="${orig_org_repo%%/*}"
     local repo="${orig_org_repo#*/}"
     local new_repo
 
-    new_repo="$(echo "$repo" | p6_filter_leading_underscores_strip)"
+    new_repo="$(p6_echo "$repo" | p6_filter_leading_underscores_strip)"
 
     if p6_string_ne "$repo" "$new_repo"; then
         local new_org_repo="${org}/${new_repo}"
-        p6_github_api_repo_rename "$orig_org_repo" "$new_org_repo"
+        p6_github_cli_repo_rename "$orig_org_repo" "$new_org_repo"
     fi
 
     p6_return_void
@@ -28,14 +28,14 @@ p6_github_api_repo_rename_strip_leading_underscores() {
 ######################################################################
 #<
 #
-# Function: int pr_id = p6_github_api_pr_last()
+# Function: int pr_id = p6_github_util_pr_last()
 #
 #  Returns:
 #	int - pr_id
 #
 #>
 ######################################################################
-p6_github_api_pr_last() {
+p6_github_util_pr_last() {
 
     # Prior PR
     local pr_id
@@ -47,14 +47,14 @@ p6_github_api_pr_last() {
 ######################################################################
 #<
 #
-# Function: int pr_id = p6_github_api_pr_oldest()
+# Function: int pr_id = p6_github_util_pr_oldest()
 #
 #  Returns:
 #	int - pr_id
 #
 #>
 ######################################################################
-p6_github_api_pr_oldest() {
+p6_github_util_pr_oldest() {
 
     # Oldest PR
     local pr_id
@@ -66,15 +66,15 @@ p6_github_api_pr_oldest() {
 ######################################################################
 #<
 #
-# Function: p6_github_api_pr_merge_last()
+# Function: p6_github_util_pr_merge_last()
 #
 #>
 ######################################################################
-p6_github_api_pr_merge_last() {
+p6_github_util_pr_merge_last() {
 
     # Prior PR
     local pr_id
-    pr_id=$(p6_github_api_pr_last)
+    pr_id=$(p6_github_util_pr_last)
 
     # Merge, Squash, Delete Branch
     p6_github_cli_pr_merge_squash_delete "$pr_id"
@@ -88,15 +88,15 @@ p6_github_api_pr_merge_last() {
 ######################################################################
 #<
 #
-# Function: p6_github_api_pr_merge_oldest()
+# Function: p6_github_util_pr_merge_oldest()
 #
 #>
 ######################################################################
-p6_github_api_pr_merge_oldest() {
+p6_github_util_pr_merge_oldest() {
 
     # Prior PR
     local pr_id
-    pr_id=$(p6_github_api_pr_oldest)
+    pr_id=$(p6_github_util_pr_oldest)
 
     # Merge, Squash, Delete Branch
     p6_github_cli_pr_merge_squash_delete "$pr_id"
@@ -110,7 +110,7 @@ p6_github_api_pr_merge_oldest() {
 ######################################################################
 #<
 #
-# Function: str state = p6_github_api_pr_state_get(pr_id)
+# Function: str state = p6_github_util_pr_state_get(pr_id)
 #
 #  Args:
 #	pr_id -
@@ -120,7 +120,7 @@ p6_github_api_pr_merge_oldest() {
 #
 #>
 ######################################################################
-p6_github_api_pr_state_get() {
+p6_github_util_pr_state_get() {
     local pr_id="$1"
 
     local state
@@ -132,7 +132,7 @@ p6_github_api_pr_state_get() {
 ######################################################################
 #<
 #
-# Function: p6_github_api_pr_poll_while_open([pr_id=], [delay=1])
+# Function: p6_github_util_pr_poll_while_open([pr_id=], [delay=1])
 #
 #  Args:
 #	OPTIONAL pr_id - []
@@ -140,12 +140,12 @@ p6_github_api_pr_state_get() {
 #
 #>
 ######################################################################
-p6_github_api_pr_poll_while_open() {
+p6_github_util_pr_poll_while_open() {
     local pr_id="${1:-}"
     local delay="${2:-1}"
 
     if p6_string_blank "$pr_id"; then
-        pr_id=$(p6_github_api_pr_oldest)
+        pr_id=$(p6_github_util_pr_oldest)
     fi
 
     while :; do
@@ -174,7 +174,7 @@ p6_github_api_pr_poll_while_open() {
 ######################################################################
 #<
 #
-# Function: p6_github_api_pr_submit(editor, user, tmpl, [reviewer=], [cli_msg=], [pr_num=])
+# Function: p6_github_util_pr_submit(editor, user, tmpl, [reviewer=], [cli_msg=], [pr_num=])
 #
 #  Args:
 #	editor -
@@ -186,7 +186,7 @@ p6_github_api_pr_poll_while_open() {
 #
 #>
 ######################################################################
-p6_github_api_pr_submit() {
+p6_github_util_pr_submit() {
     local editor="$1"
     local user="$2"
     local tmpl="$3"
@@ -209,7 +209,7 @@ p6_github_api_pr_submit() {
     p6_git_cli_add_all
     p6_git_cli_commit_with_message "$all"
     p6_git_cli_push_u
-    p6_github_api_pr_create "$user" "$reviewer"
+    p6_github_util_pr_create "$user" "$reviewer"
 
     p6_git_util_checkout_default
 
@@ -219,7 +219,7 @@ p6_github_api_pr_submit() {
 ######################################################################
 #<
 #
-# Function: p6_github_api_pr_create(user, reviewer)
+# Function: p6_github_util_pr_create(user, reviewer)
 #
 #  Args:
 #	user -
@@ -227,7 +227,7 @@ p6_github_api_pr_submit() {
 #
 #>
 ######################################################################
-p6_github_api_pr_create() {
+p6_github_util_pr_create() {
     local user="$1"
     local reviewer="$2"
 
@@ -244,7 +244,7 @@ p6_github_api_pr_create() {
 ######################################################################
 #<
 #
-# Function: str version = p6_github_api_action_version_latest(action)
+# Function: str version = p6_github_util_action_version_latest(action)
 #
 #  Args:
 #	action -
@@ -254,7 +254,7 @@ p6_github_api_pr_create() {
 #
 #>
 ######################################################################
-p6_github_api_action_version_latest() {
+p6_github_util_action_version_latest() {
     local action="$1"
 
     local version
