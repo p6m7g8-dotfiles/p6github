@@ -287,6 +287,54 @@ p6_github_cli_repo_allow_forking_get() {
 ######################################################################
 #<
 #
+# Function: str enabled = p6_github_cli_repo_is_fork_get(org, repo)
+#
+#  Args:
+#	org -
+#	repo -
+#
+#  Returns:
+#	str - enabled
+#
+#>
+######################################################################
+p6_github_cli_repo_is_fork_get() {
+  local org="$1"
+  local repo="$2"
+
+  local enabled
+  enabled=$(p6_github_cli_repo_view_json "$org" "$repo" "isFork" '.isFork')
+
+  p6_return_str "$enabled"
+}
+
+######################################################################
+#<
+#
+# Function: str enabled = p6_github_cli_repo_is_archived_get(org, repo)
+#
+#  Args:
+#	org -
+#	repo -
+#
+#  Returns:
+#	str - enabled
+#
+#>
+######################################################################
+p6_github_cli_repo_is_archived_get() {
+  local org="$1"
+  local repo="$2"
+
+  local enabled
+  enabled=$(p6_github_cli_repo_view_json "$org" "$repo" "isArchived" '.isArchived')
+
+  p6_return_str "$enabled"
+}
+
+######################################################################
+#<
+#
 # Function: p6_github_cli_repo_allow_update_branch_set(repo, enable)
 #
 #  Args:
