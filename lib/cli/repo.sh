@@ -511,16 +511,16 @@ p6_github_cli_repo_advanced_security_get() {
   local org="$1"
   local repo="$2"
 
-  local status
-  status=$(p6_github_cli_repo_api_view_json "$org" "$repo" '.security_and_analysis.advanced_security.status')
+  local status_value
+  status_value=$(p6_github_cli_repo_api_view_json "$org" "$repo" '.security_and_analysis.advanced_security.status')
 
-  case "$status" in
-    null)     status="disabled" ;;
-    enabled)  status="enabled" ;;
-    disabled) status="disabled" ;;
+  case "$status_value" in
+    null)     status_value="disabled" ;;
+    enabled)  status_value="enabled" ;;
+    disabled) status_value="disabled" ;;
   esac
 
-  p6_return_str "$status"
+  p6_return_str "$status_value"
 }
 
 ######################################################################
@@ -752,16 +752,16 @@ p6_github_cli_repo_secret_scanning_get() {
   local org="$1"
   local repo="$2"
 
-  local status
-  status=$(p6_github_cli_repo_api_view_json "$org" "$repo" '.security_and_analysis.secret_scanning.status')
+  local status_value
+  status_value=$(p6_github_cli_repo_api_view_json "$org" "$repo" '.security_and_analysis.secret_scanning.status')
 
-  case "$status" in
-    null)     status="disabled" ;;
-    enabled)  status="enabled" ;;
-    disabled) status="disabled" ;;
+  case "$status_value" in
+    null)     status_value="disabled" ;;
+    enabled)  status_value="enabled" ;;
+    disabled) status_value="disabled" ;;
   esac
 
-  p6_return_str "$status"
+  p6_return_str "$status_value"
 }
 
 ######################################################################
@@ -805,16 +805,16 @@ p6_github_cli_repo_secret_scanning_push_protection_get() {
   local org="$1"
   local repo="$2"
 
-  local status
-  status=$(p6_github_cli_repo_api_view_json "$org" "$repo" '.security_and_analysis.secret_scanning_push_protection.status')
+  local status_value
+  status_value=$(p6_github_cli_repo_api_view_json "$org" "$repo" '.security_and_analysis.secret_scanning_push_protection.status')
 
-  case "$status" in
-    null)     status="disabled" ;;
-    enabled)  status="enabled" ;;
-    disabled) status="disabled" ;;
+  case "$status_value" in
+    null)     status_value="disabled" ;;
+    enabled)  status_value="enabled" ;;
+    disabled) status_value="disabled" ;;
   esac
 
-  p6_return_str "$status"
+  p6_return_str "$status_value"
 }
 
 ######################################################################
