@@ -16,7 +16,7 @@
 p6_github_cli_org_list() {
     shift 0
 
-    p6_github_cli org list "$@"
+    p6_github_cli org list "$@" | p6_filter_column_pluck 1 | p6_filter_sort
 
     p6_return_stream
 }

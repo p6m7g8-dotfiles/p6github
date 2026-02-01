@@ -1,5 +1,12 @@
 # shellcheck shell=bash
 
+#
+# name - org/repo
+# org_repo - org/repo
+# org - org
+# repo - repo
+#
+
 ######################################################################
 #<
 #
@@ -18,7 +25,7 @@ p6_github_cli_repo_list() {
     local owner="$1"
     shift 1
 
-    p6_github_cli repo list "$owner" "$@"
+    p6_github_cli repo list -L 2000 "$owner" "$@" | p6_filter_column_pluck 1 | p6_filter_sort
 
     p6_return_stream
 }
@@ -141,6 +148,31 @@ p6_github_cli_repo_view_json() {
 ######################################################################
 #<
 #
+# Function: stream  = p6_github_cli_repo_api_view_json(org, repo, jq)
+#
+#  Args:
+#	org -
+#	repo -
+#	jq -
+#
+#  Returns:
+#	stream - 
+#
+#>
+######################################################################
+p6_github_cli_repo_api_view_json() {
+    local org="$1"
+    local repo="$2"
+    local jq="$3"
+
+    p6_github_cli api "repos/$org/$repo" --jq "$jq"
+
+    p6_return_stream
+}
+
+######################################################################
+#<
+#
 # Function: stream  = p6_github_cli_repo_topics_list(org, repo)
 #
 #  Args:
@@ -156,7 +188,7 @@ p6_github_cli_repo_topics_list() {
     local org="$1"
     local repo="$2"
 
-    p6_github_cli_repo_view_json "$org" "$repo" "repositoryTopics" '.repositoryTopics[].name'
+    p6_github_cli_repo_view_json "$org" "$repo" "repositoryTopics" '.repositoryTopics[].name' | p6_filter_sort
 
     p6_return_stream
 }
@@ -164,21 +196,21 @@ p6_github_cli_repo_topics_list() {
 ######################################################################
 #<
 #
-# Function: p6_github_cli_repo_topic_add(repo, topic, repo, topic)
+# Function: p6_github_cli_repo_topic_add(org, repo, topic)
 #
 #  Args:
-#	repo -
-#	topic -
+#	org -
 #	repo -
 #	topic -
 #
 #>
 ######################################################################
 p6_github_cli_repo_topic_add() {
-    local repo="$1"
-    local topic="$2"
+    local org="$1"
+    local repo="$2"
+    local topic="$3"
 
-    p6_github_cli repo edit "$repo" --add-topic "$topic"
+    p6_github_cli repo edit "$org/$repo" --add-topic "$topic"
 
     p6_return_void
 }
@@ -186,21 +218,649 @@ p6_github_cli_repo_topic_add() {
 ######################################################################
 #<
 #
-# Function: p6_github_cli_repo_topic_remove(repo, topic)
+# Function: p6_github_cli_repo_topic_remove(org, repo, topic)
 #
 #  Args:
+#	org -
 #	repo -
 #	topic -
 #
 #>
 ######################################################################
 p6_github_cli_repo_topic_remove() {
-    local repo="$1"
-    local topic="$2"
+    local org="$1"
+    local repo="$2"
+    local topic="$3"
 
-    p6_github_cli repo edit "$repo" --remove-topic "$topic"
+    p6_github_cli repo edit "$org/$repo" --remove-topic "$topic"
 
     p6_return_void
+}
+
+######################################################################
+#<
+#
+# Function: p6_github_cli_repo_allow_forking_set(repo, enable)
+#
+#  Args:
+#	repo -
+#	enable -
+#
+#>
+######################################################################
+p6_github_cli_repo_allow_forking_set() {
+  local repo="$1"
+  local enable="$2"
+
+  case "$enable" in
+    enable)  p6_github_cli repo edit "$repo" --allow-forking=true ;;
+    disable) p6_github_cli repo edit "$repo" --allow-forking=false ;;
+  esac
+
+  p6_return_void
+}
+
+######################################################################
+#<
+#
+# Function: str enabled = p6_github_cli_repo_allow_forking_get(org, repo)
+#
+#  Args:
+#	org -
+#	repo -
+#
+#  Returns:
+#	str - enabled
+#
+#>
+######################################################################
+p6_github_cli_repo_allow_forking_get() {
+  local org="$1"
+  local repo="$2"
+
+  local enabled
+  enabled=$(p6_github_cli_repo_api_view_json "$org" "$repo" '.allow_forking')
+
+  p6_return_str "$enabled"
+}
+
+######################################################################
+#<
+#
+# Function: p6_github_cli_repo_allow_update_branch_set(repo, enable)
+#
+#  Args:
+#	repo -
+#	enable -
+#
+#>
+######################################################################
+p6_github_cli_repo_allow_update_branch_set() {
+  local repo="$1"
+  local enable="$2"
+
+  case "$enable" in
+    enable)  p6_github_cli repo edit "$repo" --allow-update-branch=true ;;
+    disable) p6_github_cli repo edit "$repo" --allow-update-branch=false ;;
+  esac
+
+  p6_return_void
+}
+
+######################################################################
+#<
+#
+# Function: str enabled = p6_github_cli_repo_allow_update_branch_get(org, repo)
+#
+#  Args:
+#	org -
+#	repo -
+#
+#  Returns:
+#	str - enabled
+#
+#>
+######################################################################
+p6_github_cli_repo_allow_update_branch_get() {
+  local org="$1"
+  local repo="$2"
+
+  local enabled
+  enabled=$(p6_github_cli_repo_api_view_json "$org" "$repo" '.allow_update_branch')
+
+  p6_return_str "$enabled"
+}
+
+######################################################################
+#<
+#
+# Function: p6_github_cli_repo_default_branch_set(repo, branch)
+#
+#  Args:
+#	repo -
+#	branch -
+#
+#>
+######################################################################
+p6_github_cli_repo_default_branch_set() {
+  local repo="$1"
+  local branch="$2"
+
+  p6_github_cli repo edit "$repo" --default-branch "$branch"
+
+  p6_return_void
+}
+
+######################################################################
+#<
+#
+# Function: str branch = p6_github_cli_repo_default_branch_get(org, repo)
+#
+#  Args:
+#	org -
+#	repo -
+#
+#  Returns:
+#	str - branch
+#
+#>
+######################################################################
+p6_github_cli_repo_default_branch_get() {
+  local org="$1"
+  local repo="$2"
+
+  local branch
+  branch=$(p6_github_cli_repo_view_json "$org" "$repo" "defaultBranchRef" '.defaultBranchRef.name')
+
+  p6_return_str "$branch"
+}
+
+######################################################################
+#<
+#
+# Function: p6_github_cli_repo_delete_branch_on_merge_set(repo, enable)
+#
+#  Args:
+#	repo -
+#	enable -
+#
+#>
+######################################################################
+p6_github_cli_repo_delete_branch_on_merge_set() {
+  local repo="$1"
+  local enable="$2"
+
+  case "$enable" in
+    enable)  p6_github_cli repo edit "$repo" --delete-branch-on-merge=true ;;
+    disable) p6_github_cli repo edit "$repo" --delete-branch-on-merge=false ;;
+  esac
+
+  p6_return_void
+}
+
+######################################################################
+#<
+#
+# Function: str enabled = p6_github_cli_repo_delete_branch_on_merge_get(org, repo)
+#
+#  Args:
+#	org -
+#	repo -
+#
+#  Returns:
+#	str - enabled
+#
+#>
+######################################################################
+p6_github_cli_repo_delete_branch_on_merge_get() {
+  local org="$1"
+  local repo="$2"
+
+  local enabled
+  enabled=$(p6_github_cli_repo_view_json "$org" "$repo" "deleteBranchOnMerge" '.deleteBranchOnMerge')
+
+  p6_return_str "$enabled"
+}
+
+######################################################################
+#<
+#
+# Function: p6_github_cli_repo_advanced_security_set(repo, enable)
+#
+#  Args:
+#	repo -
+#	enable -
+#
+#>
+######################################################################
+p6_github_cli_repo_advanced_security_set() {
+  local repo="$1"
+  local enable="$2"
+
+  case "$enable" in
+    enable)  p6_github_cli repo edit "$repo" --enable-advanced-security ;;
+    disable) p6_github_cli repo edit "$repo" --enable-advanced-security=false ;;
+  esac
+
+  p6_return_void
+}
+
+######################################################################
+#<
+#
+# Function: str status = p6_github_cli_repo_advanced_security_get(org, repo)
+#
+#  Args:
+#	org -
+#	repo -
+#
+#  Returns:
+#	str - status
+#
+#>
+######################################################################
+p6_github_cli_repo_advanced_security_get() {
+  local org="$1"
+  local repo="$2"
+
+  local status
+  status=$(p6_github_cli_repo_api_view_json "$org" "$repo" '.security_and_analysis.advanced_security.status')
+
+  case "$status" in
+    null)     status="disabled" ;;
+    enabled)  status="enabled" ;;
+    disabled) status="disabled" ;;
+  esac
+
+  p6_return_str "$status"
+}
+
+######################################################################
+#<
+#
+# Function: p6_github_cli_repo_auto_merge_set(repo, enable)
+#
+#  Args:
+#	repo -
+#	enable -
+#
+#>
+######################################################################
+p6_github_cli_repo_auto_merge_set() {
+  local repo="$1"
+  local enable="$2"
+
+  case "$enable" in
+    enable)  p6_github_cli repo edit "$repo" --enable-auto-merge=true ;;
+    disable) p6_github_cli repo edit "$repo" --enable-auto-merge=false ;;
+  esac
+
+  p6_return_void
+}
+
+######################################################################
+#<
+#
+# Function: str enabled = p6_github_cli_repo_auto_merge_get(org, repo)
+#
+#  Args:
+#	org -
+#	repo -
+#
+#  Returns:
+#	str - enabled
+#
+#>
+######################################################################
+p6_github_cli_repo_auto_merge_get() {
+  local org="$1"
+  local repo="$2"
+
+  local enabled
+  enabled=$(p6_github_cli_repo_api_view_json "$org" "$repo" '.allow_auto_merge')
+
+  p6_return_str "$enabled"
+}
+
+######################################################################
+#<
+#
+# Function: p6_github_cli_repo_discussions_set(repo, enable)
+#
+#  Args:
+#	repo -
+#	enable -
+#
+#>
+######################################################################
+p6_github_cli_repo_discussions_set() {
+  local repo="$1"
+  local enable="$2"
+
+  case "$enable" in
+    enable)  p6_github_cli repo edit "$repo" --enable-discussions=true ;;
+    disable) p6_github_cli repo edit "$repo" --enable-discussions=false ;;
+  esac
+
+  p6_return_void
+}
+
+######################################################################
+#<
+#
+# Function: str enabled = p6_github_cli_repo_discussions_get(org, repo)
+#
+#  Args:
+#	org -
+#	repo -
+#
+#  Returns:
+#	str - enabled
+#
+#>
+######################################################################
+p6_github_cli_repo_discussions_get() {
+  local org="$1"
+  local repo="$2"
+
+  local enabled
+  enabled=$(p6_github_cli_repo_view_json "$org" "$repo" "hasDiscussionsEnabled" '.hasDiscussionsEnabled')
+
+  p6_return_str "$enabled"
+}
+
+######################################################################
+#<
+#
+# Function: p6_github_cli_repo_merge_commit_set(repo, enable)
+#
+#  Args:
+#	repo -
+#	enable -
+#
+#>
+######################################################################
+p6_github_cli_repo_merge_commit_set() {
+  local repo="$1"
+  local enable="$2"
+
+  case "$enable" in
+    enable)  p6_github_cli repo edit "$repo" --enable-merge-commit ;;
+    disable) p6_github_cli repo edit "$repo" --enable-merge-commit=false ;;
+  esac
+
+  p6_return_void
+}
+
+######################################################################
+#<
+#
+# Function: str enabled = p6_github_cli_repo_merge_commit_get(org, repo)
+#
+#  Args:
+#	org -
+#	repo -
+#
+#  Returns:
+#	str - enabled
+#
+#>
+######################################################################
+p6_github_cli_repo_merge_commit_get() {
+  local org="$1"
+  local repo="$2"
+
+  local enabled
+  enabled=$(p6_github_cli_repo_view_json "$org" "$repo" "mergeCommitAllowed" '.mergeCommitAllowed')
+
+  p6_return_str "$enabled"
+}
+
+######################################################################
+#<
+#
+# Function: p6_github_cli_repo_rebase_merge_set(repo, enable)
+#
+#  Args:
+#	repo -
+#	enable -
+#
+#>
+######################################################################
+p6_github_cli_repo_rebase_merge_set() {
+  local repo="$1"
+  local enable="$2"
+
+  case "$enable" in
+    enable)  p6_github_cli repo edit "$repo" --enable-rebase-merge=true ;;
+    disable) p6_github_cli repo edit "$repo" --enable-rebase-merge=false ;;
+  esac
+
+  p6_return_void
+}
+
+######################################################################
+#<
+#
+# Function: str enabled = p6_github_cli_repo_rebase_merge_get(org, repo)
+#
+#  Args:
+#	org -
+#	repo -
+#
+#  Returns:
+#	str - enabled
+#
+#>
+######################################################################
+p6_github_cli_repo_rebase_merge_get() {
+  local org="$1"
+  local repo="$2"
+
+  local enabled
+  enabled=$(p6_github_cli_repo_view_json "$org" "$repo" "rebaseMergeAllowed" '.rebaseMergeAllowed')
+
+  p6_return_str "$enabled"
+}
+
+######################################################################
+#<
+#
+# Function: p6_github_cli_repo_secret_scanning_set(repo, enable)
+#
+#  Args:
+#	repo -
+#	enable -
+#
+#>
+######################################################################
+p6_github_cli_repo_secret_scanning_set() {
+  local repo="$1"
+  local enable="$2"
+
+  case "$enable" in
+    enable)  p6_github_cli repo edit "$repo" --enable-secret-scanning=true ;;
+    disable) p6_github_cli repo edit "$repo" --enable-secret-scanning=false ;;
+  esac
+
+  p6_return_void
+}
+
+######################################################################
+#<
+#
+# Function: str status = p6_github_cli_repo_secret_scanning_get(org, repo)
+#
+#  Args:
+#	org -
+#	repo -
+#
+#  Returns:
+#	str - status
+#
+#>
+######################################################################
+p6_github_cli_repo_secret_scanning_get() {
+  local org="$1"
+  local repo="$2"
+
+  local status
+  status=$(p6_github_cli_repo_api_view_json "$org" "$repo" '.security_and_analysis.secret_scanning.status')
+
+  case "$status" in
+    null)     status="disabled" ;;
+    enabled)  status="enabled" ;;
+    disabled) status="disabled" ;;
+  esac
+
+  p6_return_str "$status"
+}
+
+######################################################################
+#<
+#
+# Function: p6_github_cli_repo_secret_scanning_push_protection_set(repo, enable)
+#
+#  Args:
+#	repo -
+#	enable -
+#
+#>
+######################################################################
+p6_github_cli_repo_secret_scanning_push_protection_set() {
+  local repo="$1"
+  local enable="$2"
+
+  case "$enable" in
+    enable)  p6_github_cli repo edit "$repo" --enable-secret-scanning-push-protection=true ;;
+    disable) p6_github_cli repo edit "$repo" --enable-secret-scanning-push-protection=false ;;
+  esac
+
+  p6_return_void
+}
+
+######################################################################
+#<
+#
+# Function: str status = p6_github_cli_repo_secret_scanning_push_protection_get(org, repo)
+#
+#  Args:
+#	org -
+#	repo -
+#
+#  Returns:
+#	str - status
+#
+#>
+######################################################################
+p6_github_cli_repo_secret_scanning_push_protection_get() {
+  local org="$1"
+  local repo="$2"
+
+  local status
+  status=$(p6_github_cli_repo_api_view_json "$org" "$repo" '.security_and_analysis.secret_scanning_push_protection.status')
+
+  case "$status" in
+    null)     status="disabled" ;;
+    enabled)  status="enabled" ;;
+    disabled) status="disabled" ;;
+  esac
+
+  p6_return_str "$status"
+}
+
+######################################################################
+#<
+#
+# Function: p6_github_cli_repo_squash_merge_set(repo, enable)
+#
+#  Args:
+#	repo -
+#	enable -
+#
+#>
+######################################################################
+p6_github_cli_repo_squash_merge_set() {
+  local repo="$1"
+  local enable="$2"
+
+  case "$enable" in
+    enable)  p6_github_cli repo edit "$repo" --enable-squash-merge=true ;;
+    disable) p6_github_cli repo edit "$repo" --enable-squash-merge=false ;;
+  esac
+
+  p6_return_void
+}
+
+######################################################################
+#<
+#
+# Function: str enabled = p6_github_cli_repo_squash_merge_get(org, repo)
+#
+#  Args:
+#	org -
+#	repo -
+#
+#  Returns:
+#	str - enabled
+#
+#>
+######################################################################
+p6_github_cli_repo_squash_merge_get() {
+  local org="$1"
+  local repo="$2"
+
+  local enabled
+  enabled=$(p6_github_cli_repo_view_json "$org" "$repo" "squashMergeAllowed" '.squashMergeAllowed')
+
+  p6_return_str "$enabled"
+}
+
+######################################################################
+#<
+#
+# Function: p6_github_cli_repo_template_set(repo, enable)
+#
+#  Args:
+#	repo -
+#	enable -
+#
+#>
+######################################################################
+p6_github_cli_repo_template_set() {
+  local repo="$1"
+  local enable="$2"
+
+  case "$enable" in
+    enable)  p6_github_cli repo edit "$repo" --template=true ;;
+    disable) p6_github_cli repo edit "$repo" --template=false ;;
+  esac
+
+  p6_return_void
+}
+
+######################################################################
+#<
+#
+# Function: str enabled = p6_github_cli_repo_template_get(org, repo)
+#
+#  Args:
+#	org -
+#	repo -
+#
+#  Returns:
+#	str - enabled
+#
+#>
+######################################################################
+p6_github_cli_repo_template_get() {
+  local org="$1"
+  local repo="$2"
+
+  local enabled
+  enabled=$(p6_github_cli_repo_view_json "$org" "$repo" "isTemplate" '.isTemplate')
+
+  p6_return_str "$enabled"
 }
 
 ######################################################################
@@ -246,23 +906,22 @@ p6_github_cli_repo_visibility_get() {
 ######################################################################
 #<
 #
-# Function: p6_github_cli_repo_wiki_set(repo, enabled)
+# Function: p6_github_cli_repo_wiki_set(repo, enable)
 #
 #  Args:
 #	repo -
-#	enabled - true|false
+#	enable -
 #
 #>
 ######################################################################
 p6_github_cli_repo_wiki_set() {
   local repo="$1"
-  local enabled="$2"
+  local enable="$2"
 
-  if [[ "$enabled" == "true" ]]; then
-    p6_github_cli repo edit "$repo" --enable-wiki
-  else
-    p6_github_cli repo edit "$repo" --disable-wiki
-  fi
+  case "$enable" in
+    enable)  p6_github_cli repo edit "$repo" --enable-wiki ;;
+    disable) p6_github_cli repo edit "$repo" --disable-wiki ;;
+  esac
 
   p6_return_void
 }
@@ -285,7 +944,8 @@ p6_github_cli_repo_wiki_get() {
   local org="$1"
   local repo="$2"
 
-  local enabled=$(p6_github_cli_repo_view_json "$org" "$repo" "hasWikiEnabled" '.hasWikiEnabled')
+  local enabled
+  enabled=$(p6_github_cli_repo_view_json "$org" "$repo" "hasWikiEnabled" '.hasWikiEnabled')
 
   p6_return_str "$enabled"
 }
@@ -293,23 +953,22 @@ p6_github_cli_repo_wiki_get() {
 ######################################################################
 #<
 #
-# Function: p6_github_cli_repo_issues_set(repo, enabled)
+# Function: p6_github_cli_repo_issues_set(repo, enable)
 #
 #  Args:
 #	repo -
-#	enabled - true|false
+#	enable -
 #
 #>
 ######################################################################
 p6_github_cli_repo_issues_set() {
   local repo="$1"
-  local enabled="$2"
+  local enable="$2"
 
-  if [[ "$enabled" == "true" ]]; then
-    p6_github_cli repo edit "$repo" --enable-issues
-  else
-    p6_github_cli repo edit "$repo" --disable-issues
-  fi
+  case "$enable" in
+    enable)  p6_github_cli repo edit "$repo" --enable-issues ;;
+    disable) p6_github_cli repo edit "$repo" --disable-issues ;;
+  esac
 
   p6_return_void
 }
@@ -332,7 +991,8 @@ p6_github_cli_repo_issues_get() {
   local org="$1"
   local repo="$2"
 
-  local enabled=$(p6_github_cli_repo_view_json "$org" "$repo" "hasIssuesEnabled" '.hasIssuesEnabled')
+  local enabled
+  enabled=$(p6_github_cli_repo_view_json "$org" "$repo" "hasIssuesEnabled" '.hasIssuesEnabled')
 
   p6_return_str "$enabled"
 }
@@ -340,23 +1000,22 @@ p6_github_cli_repo_issues_get() {
 ######################################################################
 #<
 #
-# Function: p6_github_cli_repo_projects_set(repo, enabled)
+# Function: p6_github_cli_repo_projects_set(repo, enable)
 #
 #  Args:
 #	repo -
-#	enabled - true|false
+#	enable -
 #
 #>
 ######################################################################
 p6_github_cli_repo_projects_set() {
   local repo="$1"
-  local enabled="$2"
+  local enable="$2"
 
-  if [[ "$enabled" == "true" ]]; then
-    p6_github_cli repo edit "$repo" --enable-projects
-  else
-    p6_github_cli repo edit "$repo" --disable-projects
-  fi
+  case "$enable" in
+    enable)  p6_github_cli repo edit "$repo" --enable-projects ;;
+    disable) p6_github_cli repo edit "$repo" --disable-projects ;;
+  esac
 
   p6_return_void
 }
@@ -379,7 +1038,8 @@ p6_github_cli_repo_projects_get() {
   local org="$1"
   local repo="$2"
 
-  local enabled=$(p6_github_cli_repo_view_json "$org" "$repo" "hasProjectsEnabled" '.hasProjectsEnabled')
+  local enabled
+  enabled=$(p6_github_cli_repo_view_json "$org" "$repo" "hasProjectsEnabled" '.hasProjectsEnabled')
 
   p6_return_str "$enabled"
 }
@@ -387,19 +1047,21 @@ p6_github_cli_repo_projects_get() {
 ######################################################################
 #<
 #
-# Function: p6_github_cli_repo_description_set(repo, description)
+# Function: p6_github_cli_repo_description_set(org, repo, description)
 #
 #  Args:
+#	org -
 #	repo -
 #	description -
 #
 #>
 ######################################################################
 p6_github_cli_repo_description_set() {
-  local repo="$1"
-  local description="$2"
+  local org="$1"
+  local repo="$2"
+  local description="$3"
 
-  p6_github_cli repo edit "$repo" --description "$description"
+  p6_github_cli repo edit "$org/$repo" --description "$description"
 
   p6_return_void
 }
@@ -422,7 +1084,8 @@ p6_github_cli_repo_description_get() {
     local org="$1"
     local repo="$2"
 
-    local desc=$(p6_github_cli_repo_view_json "$org" "$repo" "description" '.description')
+    local desc
+    desc=$(p6_github_cli_repo_view_json "$org" "$repo" "description" '.description')
 
     p6_return_str "$desc"
 }
@@ -430,19 +1093,21 @@ p6_github_cli_repo_description_get() {
 ######################################################################
 #<
 #
-# Function: p6_github_cli_repo_homepage_set(repo, homepage)
+# Function: p6_github_cli_repo_homepage_set(org, repo, homepage)
 #
 #  Args:
+#	org -
 #	repo -
 #	homepage -
 #
 #>
 ######################################################################
 p6_github_cli_repo_homepage_set() {
-  local repo="$1"
-  local homepage="$2"
+  local org="$1"
+  local repo="$2"
+  local homepage="$3"
 
-  p6_github_cli repo edit "$repo" --homepage "$homepage"
+  p6_github_cli repo edit "$org/$repo" --homepage "$homepage"
 
   p6_return_void
 }
@@ -465,7 +1130,8 @@ p6_github_cli_repo_homepage_get() {
     local org="$1"
     local repo="$2"
 
-    local home=$(p6_github_cli_repo_view_json "$org" "$repo" "homepageUrl" '.homepageUrl')
+    local home
+    home=$(p6_github_cli_repo_view_json "$org" "$repo" "homepageUrl" '.homepageUrl')
 
     p6_return_str "$home"
 }
