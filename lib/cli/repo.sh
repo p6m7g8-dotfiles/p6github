@@ -934,21 +934,25 @@ p6_github_cli_repo_visibility_set() {
 ######################################################################
 #<
 #
-# Function: p6_github_cli_repo_visibility_get(repo, visibility)
+# Function: str visibility = p6_github_cli_repo_visibility_get(org, repo)
 #
 #  Args:
+#	org -
 #	repo -
-#	visibility -
+#
+#  Returns:
+#	str - visibility
 #
 #>
 ######################################################################
 p6_github_cli_repo_visibility_get() {
-  local repo="$1"
-  local visibility="$2"
+  local org="$1"
+  local repo="$2"
 
-  local visibility=$(p6_github_cli_repo_view_json "$org" "$repo" "visibility" '.visibility')
+  local visibility
+  visibility=$(p6_github_cli_repo_view_json "$org" "$repo" "visibility" '.visibility')
 
-  p6_return_void
+  p6_return_str "$visibility"
 }
 
 ######################################################################
