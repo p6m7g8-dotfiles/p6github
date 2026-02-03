@@ -252,10 +252,7 @@ p6_github_cli_repo_allow_forking_set() {
   local repo="$1"
   local enable="$2"
 
-  case "$enable" in
-    enable)  p6_github_cli repo edit "$repo" --allow-forking=true ;;
-    disable) p6_github_cli repo edit "$repo" --allow-forking=false ;;
-  esac
+  p6_github_cli repo edit "$repo" --allow-forking="$enable"
 
   p6_return_void
 }
@@ -347,10 +344,7 @@ p6_github_cli_repo_allow_update_branch_set() {
   local repo="$1"
   local enable="$2"
 
-  case "$enable" in
-    enable)  p6_github_cli repo edit "$repo" --allow-update-branch=true ;;
-    disable) p6_github_cli repo edit "$repo" --allow-update-branch=false ;;
-  esac
+  p6_github_cli repo edit "$repo" --allow-update-branch="$enable"
 
   p6_return_void
 }
@@ -438,10 +432,7 @@ p6_github_cli_repo_delete_branch_on_merge_set() {
   local repo="$1"
   local enable="$2"
 
-  case "$enable" in
-    enable)  p6_github_cli repo edit "$repo" --delete-branch-on-merge=true ;;
-    disable) p6_github_cli repo edit "$repo" --delete-branch-on-merge=false ;;
-  esac
+  p6_github_cli repo edit "$repo" --delete-branch-on-merge="$enable"
 
   p6_return_void
 }
@@ -484,11 +475,19 @@ p6_github_cli_repo_delete_branch_on_merge_get() {
 p6_github_cli_repo_advanced_security_set() {
   local repo="$1"
   local enable="$2"
+  local org="${repo%%/*}"
+  local repo_name="${repo##*/}"
+  local visibility
+  local should_run=$P6_TRUE
 
-  case "$enable" in
-    enable)  p6_github_cli repo edit "$repo" --enable-advanced-security ;;
-    disable) p6_github_cli repo edit "$repo" --enable-advanced-security=false ;;
-  esac
+  visibility=$(p6_github_cli_repo_visibility_get "$org" "$repo_name")
+  if p6_string_eq "$visibility" "public"; then
+    should_run=$P6_FALSE
+  fi
+
+  if p6_string_eq_1 "$should_run"; then
+    p6_github_cli repo edit "$repo" --enable-advanced-security="$enable"
+  fi
 
   p6_return_void
 }
@@ -496,14 +495,14 @@ p6_github_cli_repo_advanced_security_set() {
 ######################################################################
 #<
 #
-# Function: str status = p6_github_cli_repo_advanced_security_get(org, repo)
+# Function: str status_value = p6_github_cli_repo_advanced_security_get(org, repo)
 #
 #  Args:
 #	org -
 #	repo -
 #
 #  Returns:
-#	str - status
+#	str - status_value
 #
 #>
 ######################################################################
@@ -538,10 +537,7 @@ p6_github_cli_repo_auto_merge_set() {
   local repo="$1"
   local enable="$2"
 
-  case "$enable" in
-    enable)  p6_github_cli repo edit "$repo" --enable-auto-merge=true ;;
-    disable) p6_github_cli repo edit "$repo" --enable-auto-merge=false ;;
-  esac
+  p6_github_cli repo edit "$repo" --enable-auto-merge="$enable"
 
   p6_return_void
 }
@@ -585,10 +581,7 @@ p6_github_cli_repo_discussions_set() {
   local repo="$1"
   local enable="$2"
 
-  case "$enable" in
-    enable)  p6_github_cli repo edit "$repo" --enable-discussions=true ;;
-    disable) p6_github_cli repo edit "$repo" --enable-discussions=false ;;
-  esac
+  p6_github_cli repo edit "$repo" --enable-discussions="$enable"
 
   p6_return_void
 }
@@ -632,10 +625,7 @@ p6_github_cli_repo_merge_commit_set() {
   local repo="$1"
   local enable="$2"
 
-  case "$enable" in
-    enable)  p6_github_cli repo edit "$repo" --enable-merge-commit ;;
-    disable) p6_github_cli repo edit "$repo" --enable-merge-commit=false ;;
-  esac
+  p6_github_cli repo edit "$repo" --enable-merge-commit="$enable"
 
   p6_return_void
 }
@@ -679,10 +669,7 @@ p6_github_cli_repo_rebase_merge_set() {
   local repo="$1"
   local enable="$2"
 
-  case "$enable" in
-    enable)  p6_github_cli repo edit "$repo" --enable-rebase-merge=true ;;
-    disable) p6_github_cli repo edit "$repo" --enable-rebase-merge=false ;;
-  esac
+  p6_github_cli repo edit "$repo" --enable-rebase-merge="$enable"
 
   p6_return_void
 }
@@ -726,10 +713,7 @@ p6_github_cli_repo_secret_scanning_set() {
   local repo="$1"
   local enable="$2"
 
-  case "$enable" in
-    enable)  p6_github_cli repo edit "$repo" --enable-secret-scanning=true ;;
-    disable) p6_github_cli repo edit "$repo" --enable-secret-scanning=false ;;
-  esac
+  p6_github_cli repo edit "$repo" --enable-secret-scanning="$enable"
 
   p6_return_void
 }
@@ -737,14 +721,14 @@ p6_github_cli_repo_secret_scanning_set() {
 ######################################################################
 #<
 #
-# Function: str status = p6_github_cli_repo_secret_scanning_get(org, repo)
+# Function: str status_value = p6_github_cli_repo_secret_scanning_get(org, repo)
 #
 #  Args:
 #	org -
 #	repo -
 #
 #  Returns:
-#	str - status
+#	str - status_value
 #
 #>
 ######################################################################
@@ -779,10 +763,7 @@ p6_github_cli_repo_secret_scanning_push_protection_set() {
   local repo="$1"
   local enable="$2"
 
-  case "$enable" in
-    enable)  p6_github_cli repo edit "$repo" --enable-secret-scanning-push-protection=true ;;
-    disable) p6_github_cli repo edit "$repo" --enable-secret-scanning-push-protection=false ;;
-  esac
+  p6_github_cli repo edit "$repo" --enable-secret-scanning-push-protection="$enable"
 
   p6_return_void
 }
@@ -790,14 +771,14 @@ p6_github_cli_repo_secret_scanning_push_protection_set() {
 ######################################################################
 #<
 #
-# Function: str status = p6_github_cli_repo_secret_scanning_push_protection_get(org, repo)
+# Function: str status_value = p6_github_cli_repo_secret_scanning_push_protection_get(org, repo)
 #
 #  Args:
 #	org -
 #	repo -
 #
 #  Returns:
-#	str - status
+#	str - status_value
 #
 #>
 ######################################################################
@@ -832,10 +813,7 @@ p6_github_cli_repo_squash_merge_set() {
   local repo="$1"
   local enable="$2"
 
-  case "$enable" in
-    enable)  p6_github_cli repo edit "$repo" --enable-squash-merge=true ;;
-    disable) p6_github_cli repo edit "$repo" --enable-squash-merge=false ;;
-  esac
+  p6_github_cli repo edit "$repo" --enable-squash-merge="$enable"
 
   p6_return_void
 }
@@ -879,10 +857,7 @@ p6_github_cli_repo_template_set() {
   local repo="$1"
   local enable="$2"
 
-  case "$enable" in
-    enable)  p6_github_cli repo edit "$repo" --template=true ;;
-    disable) p6_github_cli repo edit "$repo" --template=false ;;
-  esac
+  p6_github_cli repo edit "$repo" --template="$enable"
 
   p6_return_void
 }
@@ -970,10 +945,7 @@ p6_github_cli_repo_wiki_set() {
   local repo="$1"
   local enable="$2"
 
-  case "$enable" in
-    enable)  p6_github_cli repo edit "$repo" --enable-wiki ;;
-    disable) p6_github_cli repo edit "$repo" --disable-wiki ;;
-  esac
+  p6_github_cli repo edit "$repo" --enable-wiki="$enable"
 
   p6_return_void
 }
@@ -1017,10 +989,7 @@ p6_github_cli_repo_issues_set() {
   local repo="$1"
   local enable="$2"
 
-  case "$enable" in
-    enable)  p6_github_cli repo edit "$repo" --enable-issues ;;
-    disable) p6_github_cli repo edit "$repo" --disable-issues ;;
-  esac
+  p6_github_cli repo edit "$repo" --enable-issues="$enable"
 
   p6_return_void
 }
@@ -1064,10 +1033,7 @@ p6_github_cli_repo_projects_set() {
   local repo="$1"
   local enable="$2"
 
-  case "$enable" in
-    enable)  p6_github_cli repo edit "$repo" --enable-projects ;;
-    disable) p6_github_cli repo edit "$repo" --disable-projects ;;
-  esac
+  p6_github_cli repo edit "$repo" --enable-projects="$enable"
 
   p6_return_void
 }

@@ -24,7 +24,7 @@ p6_github_cli_org_list() {
 ######################################################################
 #<
 #
-# Function: stream  = p6_github_api_org_teams_list(org, org)
+# Function: stream  = p6_github_cli_org_teams_list(org, org)
 #
 #  Args:
 #	org -
@@ -36,7 +36,7 @@ p6_github_cli_org_list() {
 #
 #>
 ######################################################################
-p6_github_api_org_teams_list() {
+p6_github_cli_org_teams_list() {
     local org="$1"
 
     p6_github_cli team list -o "$org" --json name -q '.[].name'
