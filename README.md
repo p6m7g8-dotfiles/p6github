@@ -59,7 +59,7 @@ TODO: Add a short summary of this module.
 
 ##### p6github/lib/cli.sh
 
-- `p6_github_cli_api(...)`
+- `p6_github_cli(...)`
   - Args:
     - ... - 
 - `p6_github_cli_clone(repo, dir)`
@@ -127,19 +127,9 @@ TODO: Add a short summary of this module.
     - OPTIONAL reviewer - []
     - OPTIONAL cli_msg - []
     - OPTIONAL pr_num - []
-- `p6_github_util_repo_archive()`
-- `p6_github_util_repo_patch(state)`
-  - Args:
-    - state - 
-- `p6_github_util_repo_rename(orig_org_repo, new_org_repo)`
-  - Args:
-    - orig_org_repo - 
-    - new_org_repo - 
 - `p6_github_util_repo_rename_strip_leading_underscores(orig_org_repo)`
   - Args:
     - orig_org_repo - 
-- `p6_github_util_repo_unarchive()`
-- `p6_github_util_repo_workflow_upgrade_main_run()`
 - `str state = p6_github_util_pr_state_get(pr_id)`
   - Args:
     - pr_id - 
