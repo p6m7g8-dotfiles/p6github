@@ -67,9 +67,10 @@ p6_github_cli_clone() {
 #>
 ######################################################################
 p6_github_cli_repo_archive() {
-    local name="$1"
+    local org="$1"
+    local repo="$2"
 
-    p6_github_cli repo archive "$name" --yes
+    p6_github_cli repo archive "$org/$repo" --yes
 
     p6_return_stream
 }
@@ -111,9 +112,9 @@ p6_github_cli_repo_unarchive() {
 ######################################################################
 p6_github_cli_repo_rename() {
     local orig_org_repo="$1"
-    local new_org_repo="$2"
+    local new_repo="$2"
 
-    p6_github_cli repo rename -R $orig_org_reop $new_org_repo --yes
+    p6_github_cli repo rename -R $orig_org_repo $new_repo --yes
 
     p6_return_stream
 }
@@ -898,10 +899,11 @@ p6_github_cli_repo_template_get() {
 #>
 ######################################################################
 p6_github_cli_repo_visibility_set() {
-  local repo="$1"
-  local visibility="$2"
+  local org="$1"
+  local repo="$2"
+  local visibility="$3"
 
-   p6_github_cli repo edit "$repo" --visibility "$visibility" --accept-visibility-change-consequences
+   p6_github_cli repo edit "$org/$repo" --visibility "$visibility" --accept-visibility-change-consequences
 
   p6_return_void
 }
