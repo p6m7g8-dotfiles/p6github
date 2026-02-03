@@ -15,11 +15,10 @@ p6_github_util_repo_rename_strip_leading_underscores() {
     local repo="${orig_org_repo#*/}"
     local new_repo
 
-    new_repo="$(p6_echo "$repo" | p6_filter_leading_underscores_strip)"
+    new_repo="$(p6_echo "$repo" | p6_filter_strip_leading_underscores)"
 
     if p6_string_ne "$repo" "$new_repo"; then
-        local new_org_repo="${org}/${new_repo}"
-        p6_github_cli_repo_rename "$orig_org_repo" "$new_org_repo"
+        p6_github_cli_repo_rename "$orig_org_repo" "$new_repo"
     fi
 
     p6_return_void
