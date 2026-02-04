@@ -56,10 +56,11 @@ p6_github_cli_clone() {
 ######################################################################
 #<
 #
-# Function: stream  = p6_github_cli_repo_archive(name)
+# Function: stream  = p6_github_cli_repo_archive(org, repo)
 #
 #  Args:
-#	name -
+#	org -
+#	repo -
 #
 #  Returns:
 #	stream - 
@@ -99,11 +100,11 @@ p6_github_cli_repo_unarchive() {
 ######################################################################
 #<
 #
-# Function: stream  = p6_github_cli_repo_rename(orig_org_repo, new_org_repo)
+# Function: stream  = p6_github_cli_repo_rename(orig_org_repo, new_repo)
 #
 #  Args:
 #	orig_org_repo -
-#	new_org_repo -
+#	new_repo -
 #
 #  Returns:
 #	stream - 
@@ -890,9 +891,10 @@ p6_github_cli_repo_template_get() {
 ######################################################################
 #<
 #
-# Function: p6_github_cli_repo_visibility_set(repo, visibility)
+# Function: p6_github_cli_repo_visibility_set(org, repo, visibility)
 #
 #  Args:
+#	org -
 #	repo -
 #	visibility -
 #

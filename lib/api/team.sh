@@ -1,14 +1,12 @@
 ######################################################################
 #<
 #
-# Function: stream  = p6_github_api_org_teams_list(org, org)
+# Function: stream  = p6_github_api_org_teams_list(org)
 #
 #  Args:
 #	org -
-#	org -
 #
 #  Returns:
-#	stream - 
 #	stream - 
 #
 #>
