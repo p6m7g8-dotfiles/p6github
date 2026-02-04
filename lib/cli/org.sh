@@ -24,14 +24,12 @@ p6_github_cli_org_list() {
 ######################################################################
 #<
 #
-# Function: stream  = p6_github_cli_org_teams_list(org, org)
+# Function: stream  = p6_github_cli_org_teams_list(org)
 #
 #  Args:
 #	org -
-#	org -
 #
 #  Returns:
-#	stream - 
 #	stream - 
 #
 #>
