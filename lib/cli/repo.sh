@@ -115,7 +115,7 @@ p6_github_cli_repo_rename() {
     local orig_org_repo="$1"
     local new_repo="$2"
 
-    p6_github_cli repo rename -R $orig_org_repo $new_repo --yes
+    p6_github_cli repo rename -R "$orig_org_repo" "$new_repo" --yes
 
     p6_return_stream
 }

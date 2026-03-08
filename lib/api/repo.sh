@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 
 ######################################################################
 #<
@@ -17,8 +18,8 @@ p6_github_api_repo_transfer() {
     local org_repo="$1"
     local new_owner="$2"
 
-    local owner="${name%%/*}"
-    local repo="${name##*/}"
+    local owner="${org_repo%%/*}"
+    local repo="${org_repo##*/}"
 
     local payload="{\"new_owner\":\"$new_owner\"}"
 
@@ -31,5 +32,3 @@ p6_github_api_repo_transfer() {
 
     p6_return_stream
 }
-
-
