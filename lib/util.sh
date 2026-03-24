@@ -258,7 +258,7 @@ p6_github_util_action_version_latest() {
     local action="$1"
 
     local version
-    version=$(curl -s "https://api.github.com/repos/$action/releases/latest" | jq -r '.tag_name')
+    version=$(p6_curl -s "https://api.github.com/repos/$action/releases/latest" | p6_json_eval -r '.tag_name')
 
     p6_return_str "$version"
 }
